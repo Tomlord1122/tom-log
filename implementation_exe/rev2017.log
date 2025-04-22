@@ -1,0 +1,76 @@
+ldecod_src/mbuffer_mvc.c:1139:3 @[ ldecod_src/mbuffer_mvc.c:1254:4 ] with reorder_ref_pic_list_mvc: 2 reverse
+ldecod_src/intra_chroma_pred.c:367:7 @[ ldecod_src/intra_chroma_pred.c:414:5 ] with intrapred_chroma: 2 reverse
+ldecod_src/intra_chroma_pred.c:372:7 @[ ldecod_src/intra_chroma_pred.c:414:5 ] with intrapred_chroma: 2 reverse
+ldecod_src/intra_chroma_pred.c:664:11 with intrapred_chroma_mbaff: 2 reverse
+ldecod_src/macroblock.c:2621:7 with readCoeff4x4_CAVLC: 1 reverse
+625.x264: Total 9 reverse occurrences
+----------------------------------------
+/opt/riscv/lib/gcc/riscv64 with _ZNSt6vectorIN6dealii6TensorILi1ELi1EEESaIS2_EE14_M_fill_insertEN9__gnu_cxx17__normal_iteratorIPS2_S4_EEmRKS2_: 6 reverse
+/opt/riscv/lib/gcc/riscv64 with _ZNSt6vectorIN6dealii6TensorILi2ELi1EEESaIS2_EE14_M_fill_insertEN9__gnu_cxx17__normal_iteratorIPS2_S4_EEmRKS2_: 6 reverse
+/opt/riscv/lib/gcc/riscv64 with _ZNSt6vectorIN6dealii5PointILi3EEESaIS2_EE15_M_range_insertISt16reverse_iteratorIN9__gnu_cxx17__normal_iteratorIPS2_S4_EEEEEvSA_T_SC_St20forward_iterator_tag: 2 reverse
+/opt/riscv/lib/gcc/riscv64 with _ZNSt6vectorIN6dealii5PointILi1EEESaIS2_EE14_M_fill_insertEN9__gnu_cxx17__normal_iteratorIPS2_S4_EEmRKS2_: 2 reverse
+/opt/riscv/lib/gcc/riscv64 with _ZN6dealii13GridGenerator26subdivided_hyper_rectangleILi3EEEvRNS_13TriangulationIXT_EXT_EEERKSt6vectorIS5_IdSaIdEESaIS7_EERKNS_5PointIXT_EEESF_b: 6 reverse
+/opt/riscv/lib/gcc/riscv64 with _ZN9libparest34make_sorted_unique_integer_latticeILi1EEESt6vectorIN6dealii5PointIXT_EEESaIS4_EEj: 2 reverse
+510.parest: Total 24 reverse occurrences
+----------------------------------------
+dump.c:1737:6 with Perl_do_sv_dump: 1 reverse
+pp_sort.c:1246:9 @[ pp_sort.c:1373:6 @[ pp_sort.c:1466:2 ] ] with Perl_sortsv_flags: 2 reverse
+pp_sort.c:1246:9 @[ pp_sort.c:1375:6 @[ pp_sort.c:1466:2 ] ] with Perl_sortsv_flags: 2 reverse
+pp_sort.c:1246:9 @[ pp_sort.c:1422:3 @[ pp_sort.c:1466:2 ] ] with Perl_sortsv_flags: 2 reverse
+pp_sort.c:1246:9 @[ pp_sort.c:1426:3 @[ pp_sort.c:1466:2 ] ] with Perl_sortsv_flags: 2 reverse
+pp_ctl.c:1013:6 with Perl_pp_mapwhile: 2 reverse
+pp_ctl.c:1059:6 with Perl_pp_mapwhile: 1 reverse
+pp.c:5396:7 with Perl_pp_splice: 2 reverse
+pp.c:5344:3 with Perl_pp_splice: 2 reverse
+pp.c:5595:6 with Perl_pp_reverse: 2 reverse
+dist/Data with sv_x: 1 reverse
+Opcode.c:536:5 with XS_Opcode_invert_opset: 2 reverse
+Opcode.c:193:6 with set_opset_bits: 3 reverse
+Opcode.c:195:6 with set_opset_bits: 3 reverse
+sv.c:6340:2 with Perl_sv_insert_flags: 2 reverse
+toke.c:2887:7 with S_scan_const: 4 reverse
+600.perlbench: Total 33 reverse occurrences
+----------------------------------------
+liblzma/delta/delta_encoder.c:44:2 @[ liblzma/delta/delta_encoder.c:82:3 ] with delta_encode: 2 reverse
+liblzma/delta/delta_encoder.c:27:2 @[ liblzma/delta/delta_encoder.c:67:3 ] with delta_encode: 2 reverse
+liblzma/delta/delta_decoder.c:23:2 @[ liblzma/delta/delta_decoder.c:45:2 ] with delta_decode: 2 reverse
+657.xz: Total 6 reverse occurrences
+----------------------------------------
+alias.c:1141:7 @[ alias.c:2707:3 ] with init_alias_analysis: 2 reverse
+alias.c:1141:7 with record_set: 2 reverse
+decimal64.c:707:5 with decDigitsToDPD: 1 reverse
+decNumber.c:7185:2 with decApplyRound: 1 reverse
+final.c:1002:4 with shorten_branches: 1 reverse
+graphds.c:301:3 with graphds_scc: 1 reverse
+i386.c:16918:7 with ix86_split_long_move: 2 reverse
+ira with color_pass: 1 reverse
+omega.c:2879:3 @[ omega.c:4888:3 ] with omega_problem_has_red_equations: 2 reverse
+postreload.c:1419:4 @[ postreload.c:72:3 ] with reload_cse_regs: 2 reverse
+regmove.c:1277:3 @[ regmove.c:942:10 @[ regmove.c:1241:3 ] ] with regmove_optimize: 2 reverse
+reg with subst_stack_regs: 1 reverse
+rtlanal.c:2737:4 with computed_jump_p: 1 reverse
+regex.c:4284:3 @[ regex.c:2644:17 ] with byte_regex_compile: 2 reverse
+regex.c:4284:3 @[ regex.c:2630:13 ] with byte_regex_compile: 2 reverse
+regex.c:4284:3 @[ regex.c:3808:15 ] with byte_regex_compile: 2 reverse
+regex.c:4284:3 @[ regex.c:3916:22 ] with byte_regex_compile: 2 reverse
+regex.c:4301:3 @[ regex.c:3987:26 ] with byte_regex_compile: 2 reverse
+regex.c:4301:3 @[ regex.c:3956:22 ] with byte_regex_compile: 2 reverse
+regex.c:4301:3 @[ regex.c:3943:22 ] with byte_regex_compile: 2 reverse
+sel with sel_prepare_string_for_dot_label: 4 reverse
+reload1.c:1880:3 @[ reload1.c:2015:7 @[ reload1.c:2084:8 @[ reload1.c:2108:5 @[ reload1.c:1122:7 ] ] ] ] with reload: 2 reverse
+reload1.c:1880:3 @[ reload1.c:2009:7 @[ reload1.c:2084:8 @[ reload1.c:2108:5 @[ reload1.c:1122:7 ] ] ] ] with reload: 2 reverse
+reload1.c:1800:3 @[ reload1.c:1846:7 @[ reload1.c:2074:3 @[ reload1.c:2108:5 @[ reload1.c:1122:7 ] ] ] ] with reload: 3 reverse
+reload1.c:1800:3 @[ reload1.c:1841:7 @[ reload1.c:2074:3 @[ reload1.c:2108:5 @[ reload1.c:1122:7 ] ] ] ] with reload: 3 reverse
+real.c:245:7 with lshift_significand: 1 reverse
+mini with mpn_copyd: 2 reverse
+mini with mpz_mul_2exp: 2 reverse
+mini with mpn_sqrtrem: 4 reverse
+602.gcc: Total 56 reverse occurrences
+----------------------------------------
+bitboard.cpp:395:9 with _Z22SetupPrecalculatedDatav: 2 reverse
+631.deepsjeng: Total 2 reverse occurrences
+----------------------------------------
+
+Total files processed: 14
+Files with reverse occurrences: 6
+Total reverse occurrences across all files: 130

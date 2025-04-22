@@ -1,0 +1,66 @@
+Individual File Results:
+
+../TTI/rev/464.h264ref_riscv_tom_custom_out.log:
+Attempts: 136
+Successes: 125
+Fails: 11
+
+../TTI/rev/453.povray_riscv_tom_custom_out.log:
+Attempts: 84
+Successes: 84
+Fails: 0
+
+../TTI/rev/458.sjeng_riscv_tom_custom_out.log:
+Attempts: 5
+Successes: 5
+Fails: 0
+
+../TTI/rev/471.omnetpp_riscv_tom_custom_out.log:
+Attempts: 3
+Successes: 3
+Fails: 0
+
+../TTI/rev/401.bzip2_riscv_tom_custom_out.log:
+Attempts: 27
+Successes: 27
+Fails: 0
+
+../TTI/rev/456.hmmer_riscv_tom_custom_out.log:
+Attempts: 57
+Successes: 57
+Fails: 0
+
+../TTI/rev/450.soplex_riscv_tom_custom_out.log:
+Attempts: 102
+Successes: 80
+Fails: 22
+
+../TTI/rev/473.astar_riscv_tom_custom_out.log:
+Attempts: 4
+Successes: 4
+Fails: 0
+
+../TTI/rev/429.mcf_riscv_tom_custom_out.log:
+Attempts: 7
+Successes: 3
+Fails: 4
+
+../TTI/rev/400.perlbench_riscv_tom_custom_out.log:
+Attempts: 78
+Successes: 78
+Fails: 0
+
+../TTI/rev/403.gcc_riscv_tom_custom_out.log:
+Attempts: 167
+Successes: 164
+Fails: 3
+
+../TTI/rev/445.gobmk_riscv_tom_custom_out.log:
+Attempts: 109
+Successes: 108
+Fails: 1
+
+Total Results:
+Total Attempts: 779
+Total Successes: 738
+Total Fails: 41

@@ -1,0 +1,79 @@
+macroblock.c with IntraChromaPrediction: 2 reverse
+mbuffer.c with reorder_ref_pic_list: 4 reverse
+464.h264ref: Total 6 reverse occurrences
+----------------------------------------
+lathe.cpp with _ZN3pov13Compute_LatheEPNS_12Lathe_StructEPA2_d: 4 reverse
+lathe.cpp with _ZN3povL12Inside_LatheEPdPNS_13Object_StructE: 1 reverse
+polysolv.cpp with _ZN3povL9polysolveEiPdS0_: 3 reverse
+prism.cpp with _ZN3pov13Compute_PrismEPNS_12Prism_StructEPA2_d: 4 reverse
+prism.cpp with _ZN3povL8in_curveEPNS_12Prism_StructEdd: 1 reverse
+torus.cpp with _ZN3povL23All_Torus_IntersectionsEPNS_13Object_StructEPNS_10Ray_StructEPNS_13istack_structE: 1 reverse
+453.povray: Total 14 reverse occurrences
+----------------------------------------
+str2words.c:79:6 with str2words: 2 reverse
+482.sphinx3: Total 2 reverse occurrences
+----------------------------------------
+bzip2.c with uInt64_toAscii: 1 reverse
+decompress.c with BZ2_decompress: 5 reverse
+401.bzip2: Total 6 reverse occurrences
+----------------------------------------
+core_algorithms.c with P7WeeViterbi: 2 reverse
+histogram.c with PrintASCIIHistogram: 1 reverse
+456.hmmer: Total 3 reverse occurrences
+----------------------------------------
+soplex.cc with _ZNK6soplex6SoPlex7nofNZEsEv: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP10removeRowsEPNS_8SPxRowIdEiPi: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP10removeRowsEPiiS1_: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP14removeRowRangeEiiPi: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP10removeColsEPNS_8SPxColIdEiPi: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP10removeColsEPiiS1_: 1 reverse
+spxlp.cc with _ZN6soplex5SPxLP14removeColRangeEiiPi: 1 reverse
+spxsteeppr.cc with _ZN6soplex10SPxSteepPR10setupPrefsENS_6SoPlex4TypeE: 4 reverse
+spxsteeppr.cc with _ZN6soplex10SPxSteepPR10setupPrefsEdddddiiii: 2 reverse
+spxsumst.cc with _ZN6soplex8SPxSumST12setupWeightsERNS_6SoPlexE: 5 reverse
+spxweightst.cc with _ZN6soplex11SPxWeightST8generateERNS_6SoPlexE: 2 reverse
+svset.cc with _ZN6soplex5SVSet6removeEPNS_7DataKeyEiPi: 1 reverse
+svset.cc with _ZN6soplex5SVSet6removeEPiiS1_: 1 reverse
+450.soplex: Total 22 reverse occurrences
+----------------------------------------
+av.c with Perl_av_extend: 2 reverse
+av.c with Perl_av_unshift: 1 reverse
+dump.c with Perl_do_sv_dump: 1 reverse
+op.c with Perl_allocmy: 2 reverse
+pp.c with Perl_pp_splice: 5 reverse
+pp.c with Perl_pp_reverse: 2 reverse
+pp_ctl.c with Perl_pp_mapwhile: 3 reverse
+pp_hot.c with Perl_pp_subst: 2 reverse
+pp_sort.c with S_qsortsv: 2 reverse
+pp_sort.c with S_qsortsvu: 2 reverse
+sv.c with Perl_sv_clean_objs: 2 reverse
+sv.c with Perl_sv_force_normal_flags: 2 reverse
+sv.c with Perl_sv_unref_flags: 2 reverse
+sv.c with Perl_sv_insert: 4 reverse
+sv.c with Perl_sv_clear: 2 reverse
+sv.c with Perl_sv_reset: 2 reverse
+toke.c with S_scan_const: 2 reverse
+Dumper.c with sv_x: 1 reverse
+Opcode.c with XS_Opcode_invert_opset: 2 reverse
+Opcode.c with set_opset_bits: 6 reverse
+400.perlbench: Total 47 reverse occurrences
+----------------------------------------
+final.c with shorten_branches: 1 reverse
+function.c with prologue_epilogue_contains: 2 reverse
+function.c with sibcall_epilogue_contains: 1 reverse
+function.c with reposition_prologue_and_epilogue_notes: 2 reverse
+global.c with global_alloc: 6 reverse
+global.c with mark_reg_store: 6 reverse
+reg with subst_stack_regs: 1 reverse
+regmove.c with find_matches: 2 reverse
+reload1.c with reload: 8 reverse
+reload1.c with reload_cse_regs: 2 reverse
+reload1.c with count_pseudo: 2 reverse
+rtlanal.c with computed_jump_p: 1 reverse
+i386.c with ix86_compute_frame_layout: 6 reverse
+403.gcc: Total 40 reverse occurrences
+----------------------------------------
+
+Total files processed: 13
+Files with reverse occurrences: 8
+Total reverse occurrences across all files: 140
