@@ -1,0 +1,99 @@
+macroblock.c:2084:7 with IntraChromaPrediction: 1 reverse
+macroblock.c:2080:7 with IntraChromaPrediction: 1 reverse
+mbuffer.c:1351:3 @[ mbuffer.c:1450:7 ] with reorder_ref_pic_list: 2 reverse
+mbuffer.c:1381:3 @[ mbuffer.c:1454:7 ] with reorder_ref_pic_list: 2 reverse
+464.h264ref: Total 6 reverse occurrences
+----------------------------------------
+lathe.cpp:1360:7 with _ZN3pov13Compute_LatheEPNS_12Lathe_StructEPA2_d: 2 reverse
+lathe.cpp:1346:7 with _ZN3pov13Compute_LatheEPNS_12Lathe_StructEPA2_d: 2 reverse
+lathe.cpp:580:11 with _ZN3povL12Inside_LatheEPdPNS_13Object_StructE: 1 reverse
+polysolv.cpp:1477:3 with _ZN3povL9polysolveEiPdS0_: 1 reverse
+polysolv.cpp:268:5 @[ polysolv.cpp:1484:8 ] with _ZN3povL9polysolveEiPdS0_: 2 reverse
+prism.cpp:1776:7 with _ZN3pov13Compute_PrismEPNS_12Prism_StructEPA2_d: 2 reverse
+prism.cpp:1762:7 with _ZN3pov13Compute_PrismEPNS_12Prism_StructEPA2_d: 2 reverse
+prism.cpp:1352:9 with _ZN3povL8in_curveEPNS_12Prism_StructEdd: 1 reverse
+torus.cpp:283:5 @[ torus.cpp:143:16 ] with _ZN3povL23All_Torus_IntersectionsEPNS_13Object_StructEPNS_10Ray_StructEPNS_13istack_structE: 1 reverse
+453.povray: Total 14 reverse occurrences
+----------------------------------------
+bzip2.c:409:4 with uInt64_toAscii: 1 reverse
+decompress.c:350:13 with BZ2_decompress: 2 reverse
+decompress.c:402:10 with BZ2_decompress: 1 reverse
+decompress.c:474:19 with BZ2_decompress: 2 reverse
+401.bzip2: Total 6 reverse occurrences
+----------------------------------------
+core_algorithms.c:1331:4 with P7WeeViterbi: 2 reverse
+histogram.c:235:3 with PrintASCIIHistogram: 1 reverse
+456.hmmer: Total 3 reverse occurrences
+----------------------------------------
+soplex.cc:945:4 with _ZNK6soplex6SoPlex7nofNZEsEv: 1 reverse
+spxlp.cc:449:4 with _ZN6soplex5SPxLP10removeRowsEPNS_8SPxRowIdEiPi: 1 reverse
+spxlp.cc:465:4 with _ZN6soplex5SPxLP10removeRowsEPiiS1_: 1 reverse
+spxlp.cc:479:7 with _ZN6soplex5SPxLP14removeRowRangeEiiPi: 1 reverse
+spxlp.cc:503:4 with _ZN6soplex5SPxLP10removeColsEPNS_8SPxColIdEiPi: 1 reverse
+spxlp.cc:519:4 with _ZN6soplex5SPxLP10removeColsEPiiS1_: 1 reverse
+spxlp.cc:533:7 with _ZN6soplex5SPxLP14removeColRangeEiiPi: 1 reverse
+spxsteeppr.cc:163:4 @[ spxsteeppr.cc:205:10 ] with _ZN6soplex10SPxSteepPR10setupPrefsENS_6SoPlex4TypeE: 1 reverse
+spxsteeppr.cc:174:4 @[ spxsteeppr.cc:205:10 ] with _ZN6soplex10SPxSteepPR10setupPrefsENS_6SoPlex4TypeE: 1 reverse
+spxsteeppr.cc:163:4 @[ spxsteeppr.cc:203:10 ] with _ZN6soplex10SPxSteepPR10setupPrefsENS_6SoPlex4TypeE: 1 reverse
+spxsteeppr.cc:174:4 @[ spxsteeppr.cc:203:10 ] with _ZN6soplex10SPxSteepPR10setupPrefsENS_6SoPlex4TypeE: 1 reverse
+spxsteeppr.cc:163:4 with _ZN6soplex10SPxSteepPR10setupPrefsEdddddiiii: 1 reverse
+spxsteeppr.cc:174:4 with _ZN6soplex10SPxSteepPR10setupPrefsEdddddiiii: 1 reverse
+spxsumst.cc:58:7 with _ZN6soplex8SPxSumST12setupWeightsERNS_6SoPlexE: 5 reverse
+spxweightst.cc:161:4 @[ spxweightst.cc:223:4 ] with _ZN6soplex11SPxWeightST8generateERNS_6SoPlexE: 1 reverse
+spxweightst.cc:167:4 @[ spxweightst.cc:223:4 ] with _ZN6soplex11SPxWeightST8generateERNS_6SoPlexE: 1 reverse
+svset.cc:233:4 with _ZN6soplex5SVSet6removeEPNS_7DataKeyEiPi: 1 reverse
+svset.cc:242:4 with _ZN6soplex5SVSet6removeEPiiS1_: 1 reverse
+450.soplex: Total 22 reverse occurrences
+----------------------------------------
+av.c:93:3 with Perl_av_extend: 1 reverse
+av.c:164:3 with Perl_av_extend: 1 reverse
+av.c:659:2 with Perl_av_unshift: 1 reverse
+dump.c:1279:6 with Perl_do_sv_dump: 1 reverse
+op.c:234:6 with Perl_allocmy: 2 reverse
+pp.c:4332:7 with Perl_pp_splice: 2 reverse
+pp.c:4279:3 with Perl_pp_splice: 2 reverse
+pp.c:4296:2 with Perl_pp_splice: 1 reverse
+pp.c:4466:2 with Perl_pp_reverse: 2 reverse
+pp_ctl.c:920:6 with Perl_pp_mapwhile: 2 reverse
+pp_ctl.c:933:6 with Perl_pp_mapwhile: 1 reverse
+pp_hot.c:2156:3 with Perl_pp_subst: 2 reverse
+pp_sort.c:1246:9 @[ pp_sort.c:1422:3 ] with S_qsortsv: 2 reverse
+pp_sort.c:1246:9 with S_qsortsvu: 2 reverse
+sv.c:4932:5 @[ sv.c:388:6 @[ sv.c:340:3 @[ sv.c:434:5 ] ] ] with Perl_sv_clean_objs: 2 reverse
+sv.c:4932:5 @[ sv.c:7940:6 @[ sv.c:4273:2 ] ] with Perl_sv_force_normal_flags: 2 reverse
+sv.c:4932:5 @[ sv.c:7940:6 ] with Perl_sv_unref_flags: 2 reverse
+sv.c:5014:2 with Perl_sv_insert: 2 reverse
+sv.c:4974:2 with Perl_sv_insert: 2 reverse
+sv.c:4932:5 @[ sv.c:5206:10 ] with Perl_sv_clear: 2 reverse
+sv.c:4932:5 @[ sv.c:7940:6 @[ sv.c:7969:5 @[ sv.c:7114:4 ] ] ] with Perl_sv_reset: 2 reverse
+toke.c:1253:7 with S_scan_const: 2 reverse
+Dumper.c:229:6 with sv_x: 1 reverse
+Opcode.c:379:5 with XS_Opcode_invert_opset: 2 reverse
+Opcode.c:197:6 with set_opset_bits: 3 reverse
+Opcode.c:199:6 with set_opset_bits: 3 reverse
+400.perlbench: Total 47 reverse occurrences
+----------------------------------------
+final.c:1050:4 with shorten_branches: 1 reverse
+function.c:7200:2 @[ function.c:7218:7 ] with prologue_epilogue_contains: 1 reverse
+function.c:7200:2 @[ function.c:7220:7 ] with prologue_epilogue_contains: 1 reverse
+function.c:7200:2 @[ function.c:7230:12 ] with sibcall_epilogue_contains: 1 reverse
+function.c:7200:2 @[ function.c:7888:13 ] with reposition_prologue_and_epilogue_notes: 1 reverse
+function.c:7200:2 @[ function.c:7933:13 ] with reposition_prologue_and_epilogue_notes: 1 reverse
+global.c:1364:7 @[ global.c:1543:4 @[ global.c:824:4 @[ global.c:505:7 ] ] ] with global_alloc: 3 reverse
+global.c:1364:7 @[ global.c:1531:2 @[ global.c:824:4 @[ global.c:505:7 ] ] ] with global_alloc: 3 reverse
+global.c:1364:7 @[ global.c:1478:4 ] with mark_reg_store: 3 reverse
+global.c:1364:7 @[ global.c:1491:4 ] with mark_reg_store: 3 reverse
+reg with subst_stack_regs: 1 reverse
+regmove.c:1547:3 with find_matches: 2 reverse
+reload1.c:1676:3 @[ reload1.c:1768:3 @[ reload1.c:1838:8 @[ reload1.c:1860:5 @[ reload1.c:1042:7 ] ] ] ] with reload: 4 reverse
+reload1.c:1676:3 @[ reload1.c:1762:3 @[ reload1.c:1838:8 @[ reload1.c:1860:5 @[ reload1.c:1042:7 ] ] ] ] with reload: 4 reverse
+reload1.c:9281:4 @[ reload1.c:8188:3 ] with reload_cse_regs: 2 reverse
+reload1.c:1604:3 with count_pseudo: 2 reverse
+rtlanal.c:2666:4 with computed_jump_p: 1 reverse
+i386.c:3988:3 @[ i386.c:4035:18 ] with ix86_compute_frame_layout: 6 reverse
+403.gcc: Total 40 reverse occurrences
+----------------------------------------
+
+Total files processed: 12
+Files with reverse occurrences: 7
+Total reverse occurrences across all files: 138

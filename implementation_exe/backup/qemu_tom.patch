@@ -1,0 +1,257 @@
+diff --git a/.clangd b/.clangd
+new file mode 100644
+index 0000000..f43b2c2
+--- /dev/null
++++ b/.clangd
+@@ -0,0 +1,10 @@
++CompileFlags:
++    Add: [
++        -I/Users/tomlord/workspace/acedamic/llvm-project/llvm/include/,
++        -I/home/tomlord/workspace/Tom/llvm-project/llvm/include/,
++        -I/home/tomlord/workspace/qemu/include,
++    ]
++
++
++Diagnostics:
++  Suppress: '*'
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 638e47c..6a31976 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -503,6 +503,7 @@ struct RISCVCPUConfig {
+     char *bext_spec;
+     char *vext_spec;
+     uint16_t vlen;
++    uint16_t vlenb;
+     uint16_t elen;
+     uint16_t cbom_blocksize;
+     uint16_t cboz_blocksize;
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index 37b54e0..6118c66 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -1,4 +1,5 @@
+ /* Exceptions */
++#include "exec/helper-head.h"
+ DEF_HELPER_2(raise_exception, noreturn, env, i32)
+ 
+ /* Floating Point - rounding mode */
+@@ -1142,3 +1143,33 @@ DEF_HELPER_FLAGS_1(aes64im, TCG_CALL_NO_RWG_SE, tl, tl)
+ 
+ DEF_HELPER_FLAGS_3(sm4ed, TCG_CALL_NO_RWG_SE, tl, tl, tl, tl)
+ DEF_HELPER_FLAGS_3(sm4ks, TCG_CALL_NO_RWG_SE, tl, tl, tl, tl)
++
++DEF_HELPER_4(vrev_v_b, void, ptr, ptr, env, i32)
++DEF_HELPER_4(vrev_v_h, void, ptr, ptr, env, i32)
++DEF_HELPER_4(vrev_v_w, void, ptr, ptr, env, i32)
++DEF_HELPER_4(vrev_v_d, void, ptr, ptr, env, i32)
+diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+index 73d5d1b..cebcbc0 100644
+--- a/target/riscv/insn32.decode
++++ b/target/riscv/insn32.decode
+@@ -76,6 +76,7 @@
+ @r2      .......   ..... ..... ... ..... ....... &r2 %rs1 %rd
+ @r2_nfvm ... ... vm:1 ..... ..... ... ..... ....... &r2nfvm %nf %rs1 %rd
+ @r2_vm   ...... vm:1 ..... ..... ... ..... ....... &rmr %rs2 %rd
++@mtk   ...... . ..... ..... ... ..... ....... &rmr vm=1 %rs2 %rd
+ @r1_vm   ...... vm:1 ..... ..... ... ..... ....... %rd
+ @r_nfvm  ... ... vm:1 ..... ..... ... ..... ....... &rnfvm %nf %rs2 %rs1 %rd
+ @r2rd    .......   ..... ..... ... ..... ....... %rs2 %rd
+@@ -409,6 +410,11 @@ vs2r_v        001 000 1 01000 ..... 000 ..... 0100111 @r2
+ vs4r_v        011 000 1 01000 ..... 000 ..... 0100111 @r2
+ vs8r_v        111 000 1 01000 ..... 000 ..... 0100111 @r2
+ 
++# MTK Vector reverse insn.
++vrev_v      010010 1 ..... 01001 010 ..... 0101011 @mtk
++
++
++
+ # *** new major opcode OP-V ***
+ vadd_vv         000000 . ..... ..... 000 ..... 1010111 @r_vm
+ vadd_vx         000000 . ..... ..... 100 ..... 1010111 @r_vm
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index f2e3d38..c8fd41f 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -17,6 +17,7 @@
+ #include "tcg/tcg-op-gvec.h"
+ #include "tcg/tcg-gvec-desc.h"
+ #include "internals.h"
++#include <stdio.h>
+ 
+ static inline bool is_overlapped(const int8_t astart, int8_t asize,
+                                  const int8_t bstart, int8_t bsize)
+@@ -3782,3 +3783,38 @@ GEN_INT_EXT_TRANS(vzext_vf8, 3, 2)
+ GEN_INT_EXT_TRANS(vsext_vf2, 1, 3)
+ GEN_INT_EXT_TRANS(vsext_vf4, 2, 4)
+ GEN_INT_EXT_TRANS(vsext_vf8, 3, 5)
++
++
++// Check function for every reverse instructions
++static bool vrev_check(DisasContext *s, arg_rmr *a)
++{
++    return require_rvv(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_ss(s, a->rd, a->rs2, a->vm);
++}
++
++static void finalize_rvv_inst(DisasContext *ctx)
++{
++    mark_vs_dirty(ctx);
++    ctx->vstart = true;
++}
++
++static bool trans_vrev_v(DisasContext *s, arg_rmr *a)
++{
++    if (!vrev_check(s, a)) {
++        return false;
++    }
++    static gen_helper_gvec_2_ptr * const fns[4] = {
++        gen_helper_vrev_v_b, gen_helper_vrev_v_h,
++        gen_helper_vrev_v_w, gen_helper_vrev_v_d
++    };
++    uint32_t data = 0;
++    data = FIELD_DP32(data, VDATA, LMUL, s->lmul);
++    data = FIELD_DP32(data, VDATA, VTA, s->vta);
++    data = FIELD_DP32(data, VDATA, VMA, s->vma);
++    tcg_gen_gvec_2_ptr(vreg_ofs(s, a->rd), vreg_ofs(s, a->rs2), cpu_env,
++                       s->cfg_ptr->vlenb, s->cfg_ptr->vlenb, data, fns[s->sew]);
++
++    finalize_rvv_inst(s);
++    return true;
++}
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 2423aff..ee05c68 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -27,6 +27,8 @@
+ #include "tcg/tcg-gvec-desc.h"
+ #include "internals.h"
+ #include <math.h>
++#include <stdio.h>
++
+ 
+ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
+                             target_ulong s2)
+@@ -5297,3 +5299,117 @@ GEN_VEXT_INT_EXT(vsext_vf2_d, int64_t, int32_t, H8, H4)
+ GEN_VEXT_INT_EXT(vsext_vf4_w, int32_t, int8_t,  H4, H1)
+ GEN_VEXT_INT_EXT(vsext_vf4_d, int64_t, int16_t, H8, H2)
+ GEN_VEXT_INT_EXT(vsext_vf8_d, int64_t, int8_t,  H8, H1)
++
++
++#define VSTART_CHECK_EARLY_EXIT(env) do { \
++    if (env->vstart >= env->vl) {         \
++        env->vstart = 0;                  \
++        return;                           \
++    }                                     \
++} while (0)
++
++#define OP_UU_B uint8_t, uint8_t, uint8_t
++#define OP_UU_H uint16_t, uint16_t, uint16_t
++#define OP_UU_W uint32_t, uint32_t, uint32_t
++#define OP_UU_D uint64_t, uint64_t, uint64_t
++
++#define OPIVV1_ELEM_REV(NAME, TD, T2, TX2, HD, HS2)         \
++static void do_##NAME(void *vd, void *vs2, int i, uint32_t vl)  \
++{                                                            \
++    TX2 s2 = *((T2 *)vs2 + HS2(vl - 1 - i));                 \
++    *((TD *)vd + HD(i)) = s2;                                \
++}
++
++#define GEN_VEXT_V_ELEM_REV(NAME, ESZ)                       \
++void HELPER(NAME)(void *vd, void *vs2,                       \
++                  CPURISCVState *env, uint32_t desc)         \
++{                                                            \
++    uint32_t vl = env->vl;                                   \
++    uint32_t total_elems =                                   \
++        vext_get_total_elems(env, desc, ESZ);                \
++    uint32_t vta = vext_vta(desc);                           \
++    uint32_t vstart = env->vstart; /* Cache vstart */        \
++    uint32_t i;                                              \
++                                                             \
++    /* Check vstart early. If vstart >= vl, nothing to do. */ \
++    if (vstart >= vl) {                                      \
++        env->vstart = 0;                                     \
++        return;                                              \
++    }                                                        \
++                                                             \
++    if (vd == vs2) {                                         \
++        /* Handle overlapping case with a temporary buffer */ \
++        size_t elem_size = (size_t)ESZ;                      \
++        size_t num_elems = (size_t)vl;                       \
++        size_t buf_size = num_elems * elem_size;             \
++                                                             \
++        /* Basic sanity check: ensure buf_size calculation didn't overflow */ \
++        /* and vl is not zero (though caught by vstart check if vstart=0) */ \
++        if (vl == 0 || (elem_size > 0 && buf_size / elem_size != num_elems)) { \
++            fprintf(stderr, "Error: Invalid size calculation in %s (vl=%u, ESZ=%u)\n", \
++                    #NAME, vl, ESZ); \
++            /* Here, we might want to signal an illegal instruction to the guest */ \
++            /* For now, just return to avoid crashing QEMU */ \
++            return; \
++        } \
++                                                             \
++        void *temp_buf = malloc(buf_size);                   \
++        if (!temp_buf) {                                     \
++            fprintf(stderr, "Error: Failed to allocate %zu bytes temporary buffer in %s\n", \
++                    buf_size, #NAME); \
++            /* Signal error or return */ \
++            return;                                          \
++        }                                                    \
++                                                             \
++        /* Loop 1: Copy elements from vs2 (source) to temp_buf in reversed order */ \
++        /* Only copy elements from index vstart to vl-1 */   \
++        for (i = vstart; i < vl; i++) {                      \
++            /* Calculate source index (reversed) */          \
++            size_t src_idx = (size_t)(vl - 1 - i);           \
++            /* Calculate pointers */                         \
++            void *src_elem_ptr = (char *)vs2 + src_idx * elem_size; \
++            void *temp_dst_ptr = (char *)temp_buf + (size_t)i * elem_size; \
++            /* TODO: Add optional bounds checks here if needed for deep debug */ \
++            memcpy(temp_dst_ptr, src_elem_ptr, elem_size);   \
++        }                                                    \
++                                                             \
++        /* Loop 2: Copy elements from temp_buf back to vd (destination) */ \
++        /* Only copy elements from index vstart to vl-1 */   \
++        for (i = vstart; i < vl; i++) {                      \
++            /* Calculate pointers */                         \
++            void *temp_src_ptr = (char *)temp_buf + (size_t)i * elem_size; \
++            void *dst_elem_ptr = (char *)vd + (size_t)i * elem_size; \
++            /* TODO: Add optional bounds checks here */      \
++            memcpy(dst_elem_ptr, temp_src_ptr, elem_size);   \
++        }                                                    \
++                                                             \
++        free(temp_buf); /* Free the buffer */                \
++    } else {                                                 \
++        /* Non-overlapping case: direct copy */              \
++        for (i = vstart; i < vl; i++) {                      \
++            /* Use the pre-defined single-element copy function */ \
++            do_##NAME(vd, vs2, i, vl);                       \
++        }                                                    \
++    }                                                        \
++                                                             \
++    env->vstart = 0; /* Reset vstart */                      \
++    /* Set tail elements to 1s according to vta */           \
++    vext_set_elems_1s(vd, vta, (size_t)vl * ESZ,             \
++                      (size_t)total_elems * ESZ);            \
++}
++
++/* 8-bit reverse instructions */
++RVVCALL(OPIVV1_ELEM_REV, vrev_v_b, OP_UU_B, H1, H1)
++RVVCALL(OPIVV1_ELEM_REV, vrev_v_h, OP_UU_H, H1, H1)
++RVVCALL(OPIVV1_ELEM_REV, vrev_v_w, OP_UU_W, H1, H1)
++RVVCALL(OPIVV1_ELEM_REV, vrev_v_d, OP_UU_D, H1, H1)
++
++
++/* Generate helper functions for all reverse instructions */
++GEN_VEXT_V_ELEM_REV(vrev_v_b, 1)
++GEN_VEXT_V_ELEM_REV(vrev_v_h, 2)
++GEN_VEXT_V_ELEM_REV(vrev_v_w, 4)
++GEN_VEXT_V_ELEM_REV(vrev_v_d, 8)
++
++
++
+diff --git a/tests/plugin/insn.so b/tests/plugin/insn.so
+new file mode 100755
+index 0000000..8c587a2
+Binary files /dev/null and b/tests/plugin/insn.so differ

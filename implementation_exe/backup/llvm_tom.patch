@@ -1,0 +1,924 @@
+diff --git a/llvm/lib/Target/RISCV/RISCVISelLowering.cpp b/llvm/lib/Target/RISCV/RISCVISelLowering.cpp
+index 823fb4284..803cf9c82 100644
+--- a/llvm/lib/Target/RISCV/RISCVISelLowering.cpp
++++ b/llvm/lib/Target/RISCV/RISCVISelLowering.cpp
+@@ -6830,6 +6909,7 @@ SDValue RISCVTargetLowering::LowerOperation(SDValue Op,
+   case ISD::STEP_VECTOR:
+     return lowerSTEP_VECTOR(Op, DAG);
+   case ISD::VECTOR_REVERSE:
++    // return lowerVECTOR_REVERSE_MTK(Op, DAG);
+     return lowerVECTOR_REVERSE(Op, DAG);
+   case ISD::VECTOR_SPLICE:
+     return lowerVECTOR_SPLICE(Op, DAG);
+@@ -10690,13 +10799,14 @@ SDValue RISCVTargetLowering::lowerVECTOR_REVERSE(SDValue Op,
+     GatherOpc = RISCVISD::VRGATHEREI16_VV_VL;
+   }
+ 
+-  MVT XLenVT = Subtarget.getXLenVT();
+-  auto [Mask, VL] = getDefaultScalableVLOps(VecVT, DL, DAG, Subtarget);
++  MVT XLenVT =
++      Subtarget.getXLenVT(); // -> In our project, we use RV64, so XLenVT is i64
++  auto [Mask, VL] = getDefaultScalableVLOps(VecVT, DL, DAG, Subtarget); // VL is x0
+ 
+   // Calculate VLMAX-1 for the desired SEW.
+-  SDValue VLMinus1 = DAG.getNode(ISD::SUB, DL, XLenVT,
+-                                 computeVLMax(VecVT, DL, DAG),
+-                                 DAG.getConstant(1, DL, XLenVT));
++  SDValue VLMinus1 =
++      DAG.getNode(ISD::SUB, DL, XLenVT, computeVLMax(VecVT, DL, DAG),
++                  DAG.getConstant(1, DL, XLenVT));
+ 
+   // Splat VLMAX-1 taking care to handle SEW==64 on RV32.
+   bool IsRV32E64 =
+@@ -10712,10 +10822,34 @@ SDValue RISCVTargetLowering::lowerVECTOR_REVERSE(SDValue Op,
+   SDValue Indices = DAG.getNode(RISCVISD::SUB_VL, DL, IntVT, SplatVL, VID,
+                                 DAG.getUNDEF(IntVT), Mask, VL);
+ 
+-  return DAG.getNode(GatherOpc, DL, VecVT, Op.getOperand(0), Indices,
++
++
++  bool useVREV = GatherOpc == RISCVISD::VRGATHER_VV_VL;
++
++  bool IsWidenedI1 = false;
++  // Only perform the check if the current vector type is i8
++  if (VecVT.getVectorElementType() == MVT::i8) {
++    // Get the input operand to the ISD::VECTOR_REVERSE node
++    SDValue InputOperand = Op.getOperand(0);
++    if (InputOperand.getOpcode() == ISD::ZERO_EXTEND) {
++      MVT SourceVT = InputOperand.getOperand(0).getSimpleValueType();
++      if (SourceVT.isVector() && SourceVT.getVectorElementType() == MVT::i1) {
++        IsWidenedI1 = true; // Mark this as the widened i1 case
++      }
++    }
++  }
++
++
++  if (useVREV && !IsWidenedI1) {
++    return DAG.getNode(RISCVISD::VREVERSEMTK_V_VL, DL, VecVT,
++                      Op.getOperand(0));
++  } else {
++    return DAG.getNode(GatherOpc, DL, VecVT, Op.getOperand(0), Indices,
+                      DAG.getUNDEF(VecVT), Mask, VL);
++  }
+ }
+ 
++
+ SDValue RISCVTargetLowering::lowerVECTOR_SPLICE(SDValue Op,
+                                                 SelectionDAG &DAG) const {
+   SDLoc DL(Op);
+@@ -20623,6 +20769,7 @@ const char *RISCVTargetLowering::getTargetNodeName(unsigned Opcode) const {
+   NODE_NAME_CASE(SF_VC_V_XVW_SE)
+   NODE_NAME_CASE(SF_VC_V_IVW_SE)
+   NODE_NAME_CASE(SF_VC_V_VVW_SE)
++  NODE_NAME_CASE(VREVERSEMTK_V_VL)
+   NODE_NAME_CASE(SF_VC_V_FVW_SE)
+   }
+   // clang-format on
+diff --git a/llvm/lib/Target/RISCV/RISCVISelLowering.h b/llvm/lib/Target/RISCV/RISCVISelLowering.h
+index 0b0ad9229..a2ea3b61d 100644
+--- a/llvm/lib/Target/RISCV/RISCVISelLowering.h
++++ b/llvm/lib/Target/RISCV/RISCVISelLowering.h
+@@ -372,7 +372,7 @@ enum NodeType : unsigned {
+   VRGATHER_VX_VL,
+   VRGATHER_VV_VL,
+   VRGATHEREI16_VV_VL,
+-
++  
+   // Vector sign/zero extend with additional mask & VL operands.
+   VSEXT_VL,
+   VZEXT_VL,
+@@ -411,6 +411,7 @@ enum NodeType : unsigned {
+   /// Software guarded BRIND node. Operand 0 is the chain operand and
+   /// operand 1 is the target address.
+   SW_GUARDED_BRIND,
++  VREVERSEMTK_V_VL,
+ 
+   // FP to 32 bit int conversions for RV64. These are used to keep track of the
+   // result being sign extended to 64 bit. These saturate out of range inputs.
+@@ -954,6 +955,7 @@ private:
+   SDValue lowerVECTOR_INTERLEAVE(SDValue Op, SelectionDAG &DAG) const;
+   SDValue lowerSTEP_VECTOR(SDValue Op, SelectionDAG &DAG) const;
+   SDValue lowerVECTOR_REVERSE(SDValue Op, SelectionDAG &DAG) const;
++  SDValue lowerVECTOR_REVERSE_MTK(SDValue Op, SelectionDAG &DAG) const;
+   SDValue lowerVECTOR_SPLICE(SDValue Op, SelectionDAG &DAG) const;
+   SDValue lowerABS(SDValue Op, SelectionDAG &DAG) const;
+   SDValue lowerMaskedLoad(SDValue Op, SelectionDAG &DAG) const;
+diff --git a/llvm/lib/Target/RISCV/RISCVInstrInfo.td b/llvm/lib/Target/RISCV/RISCVInstrInfo.td
+index 04054d2c3..f4e55ec68 100644
+--- a/llvm/lib/Target/RISCV/RISCVInstrInfo.td
++++ b/llvm/lib/Target/RISCV/RISCVInstrInfo.td
+@@ -2087,3 +2087,7 @@ include "RISCVInstrInfoXwch.td"
+ //===----------------------------------------------------------------------===//
+ 
+ include "RISCVInstrGISel.td"
++
++
++// MTK try try
++include "RISCVInstrInfoMTKVReverse.td"
+\ No newline at end of file
+diff --git a/llvm/lib/Target/RISCV/RISCVInstrInfoMTKVReverse.td b/llvm/lib/Target/RISCV/RISCVInstrInfoMTKVReverse.td
+new file mode 100644
+index 000000000..617ec99d1
+--- /dev/null
++++ b/llvm/lib/Target/RISCV/RISCVInstrInfoMTKVReverse.td
+@@ -0,0 +1,138 @@
++//===----------------------------------------------------------------------===// 
++// try try VREV instructions
++//===----------------------------------------------------------------------===//
++// Define the base class for all reverse instructions
++class RVInstV_MTK<bits<6> funct6, bits<5> vs1, RISCVVFormat opv, dag outs,
++              dag ins, string opcodestr, string argstr>
++    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatR> {
++  bits<5> vs2;
++  bits<5> vd;
++  bit vm = 0b1; 
++
++  let Inst{31-26} = funct6;
++  let Inst{25} = vm; // value 1 means don't use mask
++  let Inst{24-20} = vs2;
++  let Inst{19-15} = vs1;
++  let Inst{14-12} = opv.Value; // 0b010 -> Defined in RISCVInstrFormatsV.td
++  let Inst{11-7} = vd;
++  let Inst{6-0} = OPC_OP_V_MTK.Value; // 0b0101011 -> Defined in RISCVInstrFormats.td
++
++  let Uses = [VTYPE, VL];
++  let RVVConstraint = VMConstraint;
++}
++
++// Inherit from the base class and add VRegClass parameter for register class flexibility
++
++let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
++// op vd, vs2, 
++class VALUVs2_MTK<bits<6> funct6, bits<5> vs1, RISCVVFormat opv, string opcodestr>
++    : RVInstV_MTK<funct6, vs1, opv, (outs VR:$vd),
++               (ins VR:$vs2),
++               opcodestr, "$vd, $vs2">;
++}
++
++
++def Vrev     : RISCVVConstraint<!or(VS2Constraint.Value,
++                                        VMConstraint.Value)>;
++
++// Usually it will be defined in RISCVInstrInfo.td
++// SDTVecReverse is defined in TargetSelectionDAG.td
++def riscv_vreversemtk_v_vl : SDNode<"RISCVISD::VREVERSEMTK_V_VL", SDTVecReverse>;
++
++
++// VREV_V_e8M1, VREV_V_e8M2, VREV_V_e8M4, VREV_V_e8M8 -> vrev8m1, vrev8m2, vrev8m4, vrev8m8
++// Constraints = "@earlyclobber $vd"
++// let Constraints = "@earlyclobber $vd", RVVConstraint = Vrev in {
++  def VREV_V : VALUVs2_MTK<0b010010, 0b01001, OPMVV, "vrev.v">;
++// }
++
++
++//===----------------------------------------------------------------------===//
++// try try Pseudo instructions
++//===----------------------------------------------------------------------===//
++
++
++// VPseudoUnaryNoMask and VPseudoUnaryMask are defined in RISCVInstrInfoVPseudos.td
++multiclass VPseudoUnaryV_V_REV<LMULInfo m> {
++  let VLMul = m.value in {
++    foreach eew = [8, 16, 32, 64] in {
++      def "_V_E"#eew#"_"#m.MX : VPseudoUnaryNoMask<m.vrclass, m.vrclass> {
++        let Predicates = [HasVInstructions];
++      }
++      def "_V_E"#eew#"_"#m.MX#"_MASK" : VPseudoUnaryMask<m.vrclass, m.vrclass>, RISCVMaskedPseudo<MaskIdx=2> {
++        let Predicates = [HasVInstructions];
++      }
++    } 
++  } 
++}
++
++// Define a class to hold the Suffix string and LMULInfo object pair
++class SuffixLmulPair<string suffix, LMULInfo lmul> {
++  string Suffix = suffix;
++  LMULInfo Lmul = lmul;
++}
++
++// Define the list using instances of the SuffixLmulPair class
++defvar MF_PAIRS = [
++  SuffixLmulPair<"_V_E8_MF2", V_MF2>,
++  SuffixLmulPair<"_V_E8_MF4", V_MF4>,
++  SuffixLmulPair<"_V_E8_MF8", V_MF8>,
++  SuffixLmulPair<"_V_E16_MF4", V_MF4>,
++  SuffixLmulPair<"_V_E16_MF2", V_MF2>,
++  SuffixLmulPair<"_V_E32_MF2", V_MF2>
++];
++
++multiclass VPseudoUnaryV_V_REV_MF {
++  let Predicates = [HasVInstructions] in {
++    // Iterate over the list of SuffixLmulPair instances
++    foreach pair = MF_PAIRS in {
++      // Access the fields by their defined names
++      defvar suffix_name = pair.Suffix;
++      defvar lmul_info = pair.Lmul;
++
++      // Define the unmasked pseudo instruction
++      def suffix_name : VPseudoUnaryNoMask<VR, VR>, SchedUnary<"WriteVREV8V", "ReadVREV8V", lmul_info.MX, forceMergeOpRead=true>;
++
++      // Define the masked pseudo instruction
++      def suffix_name # "_MASK" : VPseudoUnaryMask<VR, VR>, RISCVMaskedPseudo<MaskIdx=2>, SchedUnary<"WriteVREV8V", "ReadVREV8V", lmul_info.MX, forceMergeOpRead=true>;
++    }
++  }
++}
++
++
++
++defvar MxList_REV = [V_M1, V_M2, V_M4, V_M8];
++
++multiclass VPseudoVREV {
++  foreach m = MxList_REV in {
++    defm "" : VPseudoUnaryV_V_REV<m>, 
++              SchedUnary<"WriteVREV8V", "ReadVREV8V", m.MX, forceMergeOpRead=true>;
++  }
++  defm "" : VPseudoUnaryV_V_REV_MF;
++}
++
++defm PseudoVREV : VPseudoVREV;
++
++//===----------------------------------------------------------------------===//
++// try try Pseudo instructions Pattern match
++//===----------------------------------------------------------------------===//
++// VPatUnarySDNode_V
++// VPatUnaryVL_V
++multiclass VPatUnarySDNode_V_REV<SDPatternOperator op, string instruction_name,
++                             Predicate predicate = HasVInstructions> {
++  foreach vti = [VI8MF8, VI8MF4, VI8MF2, VI8M1, VI8M2, VI8M4, VI8M8, VI16MF4, VI16MF2, VI16M1, VI16M2, VI16M4, VI16M8, VI32MF2, VI32M1, VI32M2, VI32M4, VI32M8, VI64M1, VI64M2, VI64M4, VI64M8,
++  VF16MF4, VF16MF2, VF32MF2, VF16M1, VF32M1, VF64M1, VF16M2, VF16M4, VF16M8, VF32M2, VF32M4, VF32M8, VF64M2, VF64M4, VF64M8] in {
++    let Predicates = !listconcat([predicate],
++                                 GetVTypePredicates<vti>.Predicates) in {
++      def : Pat<(vti.Vector (op (vti.Vector vti.RegClass:$vs2))),
++                (!cast<Instruction>(instruction_name#"_V_E"#vti.SEW#"_"#vti.LMul.MX)
++                  (vti.Vector (IMPLICIT_DEF)),
++                   vti.RegClass:$vs2,
++                   vti.AVL, vti.Log2SEW, TA_MA)>; 
++    }
++  }
++}
++defm : VPatUnarySDNode_V_REV<riscv_vreversemtk_v_vl, "PseudoVREV", HasVInstructions>;
++
++
++// Pseudo Instruction PseudoVREV_V_e32M2 -> VREV_V_e32M2
+\ No newline at end of file
+diff --git a/llvm/lib/Target/RISCV/RISCVTargetTransformInfo.cpp b/llvm/lib/Target/RISCV/RISCVTargetTransformInfo.cpp
+index 5a92d6bab..fd6d02045 100644
+--- a/llvm/lib/Target/RISCV/RISCVTargetTransformInfo.cpp
++++ b/llvm/lib/Target/RISCV/RISCVTargetTransformInfo.cpp
+@@ -17,9 +17,15 @@
+ #include "llvm/IR/PatternMatch.h"
+ #include <cmath>
+ #include <optional>
++#include "llvm/ADT/SmallString.h"
++#include <string>
++
+ using namespace llvm;
+ using namespace llvm::PatternMatch;
+-
++extern SmallString<256> ttilog;
++extern SmallString<256> ttislp;
++#define STR(a) std::to_string(a.getValue().value())
++#define STRI(a) std::to_string(a)
+ #define DEBUG_TYPE "riscvtti"
+ 
+ static cl::opt<unsigned> RVVRegisterWidthLMUL(
+@@ -306,11 +312,14 @@ std::optional<unsigned> RISCVTTIImpl::getMaxVScale() const {
+ }
+ 
+ std::optional<unsigned> RISCVTTIImpl::getVScaleForTuning() const {
++  // Check if the target has vector instructions
+   if (ST->hasVInstructions())
++    // get the minimum vector length
+     if (unsigned MinVLen = ST->getRealMinVLen();
+         MinVLen >= RISCV::RVVBitsPerBlock)
++      // return the vscale value
+       return MinVLen / RISCV::RVVBitsPerBlock;
+-  return BaseT::getVScaleForTuning();
++  return BaseT::getVScaleForTuning(); // return std::nullopt
+ }
+ 
+ TypeSize
+@@ -366,6 +375,8 @@ InstructionCost RISCVTTIImpl::getShuffleCost(TTI::ShuffleKind Kind,
+   // First, handle cases where having a fixed length vector enables us to
+   // give a more accurate cost than falling back to generic scalable codegen.
+   // TODO: Each of these cases hints at a modeling gap around scalable vectors.
++  // llvm::outs() << "@@MVT: " << LT.second << "\n";
++
+   if (isa<FixedVectorType>(Tp)) {
+     switch (Kind) {
+     default:
+@@ -601,7 +612,17 @@ InstructionCost RISCVTTIImpl::getShuffleCost(TTI::ShuffleKind Kind,
+         getRISCVInstructionCost(Opcodes, LT.second, CostKind);
+     // Mask operation additionally required extend and truncate
+     InstructionCost ExtendCost = Tp->getElementType()->isIntegerTy(1) ? 3 : 0;
+-    return LT.first * (LenCost + GatherCost + ExtendCost);
++    InstructionCost ShuffleCost = LT.first * (LenCost + GatherCost + ExtendCost);
++    // ttilog += "-> ShuffleCost(" + STR(ShuffleCost) + ") = LT.first("+STR(LT.first) + ") * (" + STR(LenCost) + " + " + STR(GatherCost) + " + " + STR(ExtendCost) + ")";
++    ttilog += "-> ShuffleCost(1)";
++    ttilog += "\t-> Mask = [";
++    for (size_t i = 0; i < Mask.size();i++){
++      ttilog += STRI(Mask[i]) + ", ";
++    }
++    ttilog += "]";
++    ttilog += "\t-> ASM: [VID_V, VRSUB_VX, VRGATHER_VV]";
++    // return ShuffleCost;
++    return (LT.second.isFixedLengthVector()) ? ShuffleCost : 1;
+   }
+   }
+   return BaseT::getShuffleCost(Kind, Tp, Mask, CostKind, Index, SubTp);
+diff --git a/llvm/lib/Target/RISCV/tryVrgather.td b/llvm/lib/Target/RISCV/tryVrgather.td
+new file mode 100644
+index 000000000..3bbdfd85b
+--- /dev/null
++++ b/llvm/lib/Target/RISCV/tryVrgather.td
+@@ -0,0 +1,242 @@
++// In this file, I am gonna try to trace all the code related to vrgather
++
++//===----------------------------------------------------------------------===//
++// RISCVInstrFormats.td
++//===----------------------------------------------------------------------===//
++// vrgather: The destination vector register group cannot overlap with the
++// source vector register groups.
++def Vrgather     : RISCVVConstraint<!or(VS2Constraint.Value,
++                                        VS1Constraint.Value,
++                                        VMConstraint.Value)>;
++
++
++//===----------------------------------------------------------------------===//
++// RISCVInstrInfoV.td
++//===----------------------------------------------------------------------===//
++multiclass VGTR_IV_V_X_I<string opcodestr, bits<6> funct6> {
++  def V  : VALUVV<funct6, OPIVV, opcodestr # ".vv">,
++           SchedBinaryMC<"WriteVRGatherVV", "ReadVRGatherVV_data",
++                         "ReadVRGatherVV_index">;
++  def X  : VALUVX<funct6, OPIVX, opcodestr # ".vx">,
++           SchedBinaryMC<"WriteVRGatherVX", "ReadVRGatherVX_data",
++                         "ReadVRGatherVX_index">;
++  def I  : VALUVI<funct6, opcodestr # ".vi", uimm5>,
++           SchedUnaryMC<"WriteVRGatherVI", "ReadVRGatherVI_data">;
++}
++
++
++let Predicates = [HasVInstructions] in {
++// Vector Register Gather Instruction
++let Constraints = "@earlyclobber $vd", RVVConstraint = Vrgather in {
++    defm VRGATHER_V : VGTR_IV_V_X_I<"vrgather", 0b001100>;
++    def VRGATHEREI16_VV : VALUVV<0b001110, OPIVV, "vrgatherei16.vv">,
++                        SchedBinaryMC<"WriteVRGatherEI16VV",
++                                        "ReadVRGatherEI16VV_data",
++                                        "ReadVRGatherEI16VV_index">;
++} // Constraints = "@earlyclobber $vd", RVVConstraint = Vrgather
++} // Predicates = [HasVInstructions]
++
++//===----------------------------------------------------------------------===//
++// RISCVInstrInfoVPseudos.td
++//===----------------------------------------------------------------------===//
++multiclass VPseudoVGTR_EI16_VV {
++  defvar constraint = "@earlyclobber $rd";
++  foreach m = MxList in {
++    defvar mx = m.MX;
++    foreach sew = EEWList in {
++      defvar dataEMULOctuple = m.octuple;
++      // emul = lmul * 16 / sew
++      defvar idxEMULOctuple = !srl(!mul(dataEMULOctuple, 16), !logtwo(sew));
++      if !and(!ge(idxEMULOctuple, 1), !le(idxEMULOctuple, 64)) then {
++        defvar emulMX = octuple_to_str<idxEMULOctuple>.ret;
++        defvar emul = !cast<LMULInfo>("V_" # emulMX);
++        defvar sews = SchedSEWSet<mx>.val;
++        foreach e = sews in {
++          defm _VV
++              : VPseudoBinaryEmul<m.vrclass, m.vrclass, emul.vrclass, m, emul,
++                                  constraint, e>,
++                SchedBinary<"WriteVRGatherEI16VV", "ReadVRGatherEI16VV_data",
++                            "ReadVRGatherEI16VV_index", mx, e, forceMergeOpRead=true>;
++        }
++      }
++    }
++  }
++}
++
++
++multiclass VPseudoVGTR_VV_VX_VI {
++  defvar constraint = "@earlyclobber $rd";
++  // MxList is the possible LMUL values -> [V_MF8, V_MF4, V_MF2, V_M1, V_M2, V_M4, V_M8];
++  foreach m = MxList in {
++    defvar mx = m.MX; // mx is LMUL value (e.g. V_MF8 = 1/8, V_MF4 = 1/4, etc.)
++    defm "" : VPseudoBinaryV_VX<m, constraint>,
++              SchedBinary<"WriteVRGatherVX", "ReadVRGatherVX_data",
++                          "ReadVRGatherVX_index", mx, forceMergeOpRead=true>;
++    defm "" : VPseudoBinaryV_VI<uimm5, m, constraint>,
++              SchedUnary<"WriteVRGatherVI", "ReadVRGatherVI_data", mx,
++                         forceMergeOpRead=true>;
++
++    defvar sews = SchedSEWSet<mx>.val;
++    foreach e = sews in {
++      defm "" : VPseudoBinaryV_VV<m, constraint, e>,
++                SchedBinary<"WriteVRGatherVV", "ReadVRGatherVV_data",
++                              "ReadVRGatherVV_index", mx, e, forceMergeOpRead=true>;
++    }
++  }
++}
++
++let Predicates = [HasVInstructions] in {
++defm PseudoVRGATHER     : VPseudoVGTR_VV_VX_VI;
++defm PseudoVRGATHEREI16 : VPseudoVGTR_EI16_VV;
++} // Predicates = [HasVInstructions]
++
++
++// Intrinsic Patterns
++defm : VPatBinaryV_VV_VX_VI_INT<"int_riscv_vrgather", "PseudoVRGATHER",
++                                AllIntegerVectors, uimm5>;
++                                
++defm : VPatBinaryV_VV_VX_VI_INT<"int_riscv_vrgather", "PseudoVRGATHER",
++                                AllFloatVectors, uimm5>;
++
++defm : VPatBinaryV_VV_INT_EEW<"int_riscv_vrgatherei16_vv", "PseudoVRGATHEREI16",
++                              eew=16, vtilist=AllIntegerVectors>;
++
++
++defm : VPatBinaryV_VV_INT_EEW<"int_riscv_vrgatherei16_vv", "PseudoVRGATHEREI16",
++                              eew=16, vtilist=AllFloatVectors>;
++
++//===----------------------------------------------------------------------===//
++// RISCVInstrInfoVVLPatterns.td
++//===----------------------------------------------------------------------===//
++def riscv_vrgather_vx_vl : SDNode<"RISCVISD::VRGATHER_VX_VL",
++                                  SDTypeProfile<1, 5, [SDTCisVec<0>,
++                                                       SDTCisSameAs<0, 1>,
++                                                       SDTCisVT<2, XLenVT>,
++                                                       SDTCisSameAs<0, 3>,
++                                                       SDTCVecEltisVT<4, i1>,
++                                                       SDTCisSameNumEltsAs<0, 4>,
++                                                       SDTCisVT<5, XLenVT>]>>;
++def riscv_vrgather_vv_vl : SDNode<"RISCVISD::VRGATHER_VV_VL",
++                                  SDTypeProfile<1, 5, [SDTCisVec<0>,
++                                                       SDTCisSameAs<0, 1>,
++                                                       SDTCisInt<2>,
++                                                       SDTCisSameNumEltsAs<0, 2>,
++                                                       SDTCisSameSizeAs<0, 2>,
++                                                       SDTCisSameAs<0, 3>,
++                                                       SDTCVecEltisVT<4, i1>,
++                                                       SDTCisSameNumEltsAs<0, 4>,
++                                                       SDTCisVT<5, XLenVT>]>>;
++def riscv_vrgatherei16_vv_vl : SDNode<"RISCVISD::VRGATHEREI16_VV_VL",
++                                      SDTypeProfile<1, 5, [SDTCisVec<0>,
++                                                           SDTCisSameAs<0, 1>,
++                                                           SDTCisInt<2>,
++                                                           SDTCVecEltisVT<2, i16>,
++                                                           SDTCisSameNumEltsAs<0, 2>,
++                                                           SDTCisSameAs<0, 3>,
++                                                           SDTCVecEltisVT<4, i1>,
++                                                           SDTCisSameNumEltsAs<0, 4>,
++                                                           SDTCisVT<5, XLenVT>]>>;
++
++
++// 16.4. Vector Register Gather Instruction
++// Integer Vector Gather Instruction
++foreach vti = AllIntegerVectors in {
++  let Predicates = GetVTypePredicates<vti>.Predicates in {
++    def : Pat<(vti.Vector (riscv_vrgather_vv_vl vti.RegClass:$rs2,
++                                                vti.RegClass:$rs1,
++                                                vti.RegClass:$merge,
++                                                (vti.Mask V0),
++                                                VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VV_"# vti.LMul.MX#"_E"# vti.SEW#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, vti.RegClass:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++    def : Pat<(vti.Vector (riscv_vrgather_vx_vl vti.RegClass:$rs2, GPR:$rs1,
++                                                vti.RegClass:$merge,
++                                                (vti.Mask V0),
++                                                VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VX_"# vti.LMul.MX#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, GPR:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++    def : Pat<(vti.Vector (riscv_vrgather_vx_vl vti.RegClass:$rs2,
++                                                uimm5:$imm,
++                                                vti.RegClass:$merge,
++                                                (vti.Mask V0),
++                                                VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VI_"# vti.LMul.MX#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, uimm5:$imm,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++  }
++
++  // emul = lmul * 16 / sew
++  defvar vlmul = vti.LMul;
++  defvar octuple_lmul = vlmul.octuple;
++  defvar octuple_emul = !srl(!mul(octuple_lmul, 16), vti.Log2SEW);
++  if !and(!ge(octuple_emul, 1), !le(octuple_emul, 64)) then {
++    defvar emul_str = octuple_to_str<octuple_emul>.ret;
++    defvar ivti = !cast<VTypeInfo>("VI16" # emul_str);
++    defvar inst = "PseudoVRGATHEREI16_VV_" # vti.LMul.MX # "_E" # vti.SEW # "_" # emul_str;
++    let Predicates = GetVTypePredicates<vti>.Predicates in
++    def : Pat<(vti.Vector
++               (riscv_vrgatherei16_vv_vl vti.RegClass:$rs2,
++                                         (ivti.Vector ivti.RegClass:$rs1),
++                                         vti.RegClass:$merge,
++                                         (vti.Mask V0),
++                                         VLOpFrag)),
++              (!cast<Instruction>(inst#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, ivti.RegClass:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++  }
++}
++
++
++// Floating Point Vector Gather Instruction
++foreach vti = AllFloatVectors in {
++  defvar ivti = GetIntVTypeInfo<vti>.Vti;
++  let Predicates = GetVTypePredicates<ivti>.Predicates in {
++    def : Pat<(vti.Vector
++               (riscv_vrgather_vv_vl vti.RegClass:$rs2,
++                                     (ivti.Vector vti.RegClass:$rs1),
++                                     vti.RegClass:$merge,
++                                     (vti.Mask V0),
++                                     VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VV_"# vti.LMul.MX#"_E"# vti.SEW#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, vti.RegClass:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++    def : Pat<(vti.Vector (riscv_vrgather_vx_vl vti.RegClass:$rs2, GPR:$rs1,
++                                                vti.RegClass:$merge,
++                                                (vti.Mask V0),
++                                                VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VX_"# vti.LMul.MX#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, GPR:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++    def : Pat<(vti.Vector
++               (riscv_vrgather_vx_vl vti.RegClass:$rs2,
++                                     uimm5:$imm,
++                                     vti.RegClass:$merge,
++                                     (vti.Mask V0),
++                                     VLOpFrag)),
++              (!cast<Instruction>("PseudoVRGATHER_VI_"# vti.LMul.MX#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, uimm5:$imm,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++  }
++
++  defvar vlmul = vti.LMul;
++  defvar octuple_lmul = vlmul.octuple;
++  defvar octuple_emul = !srl(!mul(octuple_lmul, 16), vti.Log2SEW);
++  if !and(!ge(octuple_emul, 1), !le(octuple_emul, 64)) then {
++    defvar emul_str = octuple_to_str<octuple_emul>.ret;
++    defvar ivti = !cast<VTypeInfo>("VI16" # emul_str);
++    defvar inst = "PseudoVRGATHEREI16_VV_" # vti.LMul.MX # "_E" # vti.SEW # "_" # emul_str;
++    let Predicates = !listconcat(GetVTypePredicates<vti>.Predicates,
++                                 GetVTypePredicates<ivti>.Predicates) in
++    def : Pat<(vti.Vector
++               (riscv_vrgatherei16_vv_vl vti.RegClass:$rs2,
++                                         (ivti.Vector ivti.RegClass:$rs1),
++                                         vti.RegClass:$merge,
++                                         (vti.Mask V0),
++                                         VLOpFrag)),
++              (!cast<Instruction>(inst#"_MASK")
++                   vti.RegClass:$merge, vti.RegClass:$rs2, ivti.RegClass:$rs1,
++                   (vti.Mask V0), GPR:$vl, vti.Log2SEW, TAIL_AGNOSTIC)>;
++  }
++}
+diff --git a/llvm/lib/Target/RISCV/trytry.td b/llvm/lib/Target/RISCV/trytry.td
+new file mode 100644
+index 000000000..4b1be56c4
+--- /dev/null
++++ b/llvm/lib/Target/RISCV/trytry.td
+@@ -0,0 +1,342 @@
++
++// RISCVInstrInfoVPseudos.td
++// The actual table.
++def RISCVVPseudosTable : GenericTable {
++  let FilterClass = "RISCVVPseudo";
++  let FilterClassField = "NeedBeInPseudoTable";
++  let CppTypeName = "PseudoInfo";
++  let Fields = [ "Pseudo", "BaseInstr" ];
++  let PrimaryKey = [ "Pseudo" ];
++  let PrimaryKeyName = "getPseudoInfo";
++  let PrimaryKeyEarlyOut = true;
++}
++
++def RISCVVInversePseudosTable : GenericTable {
++  let FilterClass = "RISCVVPseudo";
++  let CppTypeName = "PseudoInfo";
++  let Fields = [ "Pseudo", "BaseInstr", "VLMul", "SEW"];
++  let PrimaryKey = [ "BaseInstr", "VLMul", "SEW"];
++  let PrimaryKeyName = "getBaseInfo";
++  let PrimaryKeyEarlyOut = true;
++}
++
++
++//===----------------------------------------------------------------------===//
++// VREV8 instruction format and definition in zvkb extension
++//===----------------------------------------------------------------------===//
++// RISCVInstrFormatsV.td
++class RVInstV<bits<6> funct6, bits<5> vs1, RISCVVFormat opv, dag outs,
++              dag ins, string opcodestr, string argstr>
++    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatR> {
++  bits<5> vs2;
++  bits<5> vd;
++  bit vm;
++
++  let Inst{31-26} = funct6;
++  let Inst{25} = vm;
++  let Inst{24-20} = vs2;
++  let Inst{19-15} = vs1;
++  let Inst{14-12} = opv.Value; // 010
++  let Inst{11-7} = vd;
++  let Inst{6-0} = OPC_OP_V.Value;  // 1010111
++
++  let Uses = [VTYPE, VL];
++  let RVVConstraint = VMConstraint;
++}
++
++// RISCVInstrInfoV.td
++let hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
++  class VALUVs2<bits<6> funct6, bits<5> vs1, RISCVVFormat opv, string opcodestr>
++    : RVInstV<funct6, vs1, opv, (outs VR:$vd),
++                (ins VR:$vs2), VMaskOp:$vm,
++                opcodestr, "$vd, $vs2$vm">;
++}
++
++// RISCVInstrInfoZvk.td
++let Predicates = [HasStdExtZvkb] in {
++  def VREV8V : VALUVs2<0b010010, 0b01001, OPMVV, "vrev8.v">; 
++}
++
++
++//===----------------------------------------------------------------------===//
++// PseudoVREV8 instruction format and definition in zvkb extension
++//===----------------------------------------------------------------------===//
++
++//--------------------------------
++// Class related to VPseudoUnaryV_V
++//--------------------------------
++
++// RISCVInstrInfoVPseudos.td
++class PseudoToVInst<string PseudoInst> {
++  defvar AffixSubsts = [["Pseudo", ""],
++                        ["_E64", ""],
++                        ["_E32", ""],
++                        ["_E16", ""],
++                        ["_E8", ""],
++                        ["FPR64", "F"],
++                        ["FPR32", "F"],
++                        ["FPR16", "F"],
++                        ["_TIED", ""],
++                        ["_MASK", ""],
++                        ["_B64", ""],
++                        ["_B32", ""],
++                        ["_B16", ""],
++                        ["_B8", ""],
++                        ["_B4", ""],
++                        ["_B2", ""],
++                        ["_B1", ""],
++                        ["_MF8", ""],
++                        ["_MF4", ""],
++                        ["_MF2", ""],
++                        ["_M1", ""],
++                        ["_M2", ""],
++                        ["_M4", ""],
++                        ["_M8", ""],
++                        ["_SE", ""],
++                        ["_RM", ""]
++                       ];
++  string VInst = !foldl(PseudoInst, AffixSubsts, Acc, AffixSubst,
++                        !subst(AffixSubst[0], AffixSubst[1], Acc));
++}
++
++// RISCVInstrFormats.td
++class Pseudo<dag outs, dag ins, list<dag> pattern, string opcodestr = "", string argstr = "">
++    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatPseudo> {
++  let isPseudo = 1;
++  let isCodeGenOnly = 1;
++}
++
++// This class holds the record of the RISCVVPseudoTable below.
++// This represents the information we need in codegen for each pseudo.
++// The definition should be consistent with `struct PseudoInfo` in
++// RISCVInstrInfo.h.
++
++// RISCVInstrInfoVPseudos.td
++class RISCVVPseudo {
++  Pseudo Pseudo = !cast<Pseudo>(NAME); // Used as a key.
++  Instruction BaseInstr = !cast<Instruction>(PseudoToVInst<NAME>.VInst);
++  // SEW = 0 is used to denote that the Pseudo is not SEW specific (or unknown).
++  bits<8> SEW = 0;
++  bit NeedBeInPseudoTable = 1;
++}
++
++// RISCVInstrInfoVPseudos.td
++class VPseudoUnaryNoMask<DAGOperand RetClass,
++                         DAGOperand OpClass,
++                         string Constraint = "",
++                         int TargetConstraintType = 1> :
++      Pseudo<(outs RetClass:$rd),
++             (ins RetClass:$merge, OpClass:$rs2,
++                  AVL:$vl, ixlenimm:$sew, ixlenimm:$policy), []>,
++      RISCVVPseudo {
++  let mayLoad = 0;
++  let mayStore = 0;
++  let hasSideEffects = 0;
++  let Constraints = !interleave([Constraint, "$rd = $merge"], ",");
++  let TargetOverlapConstraintType = TargetConstraintType;
++  let HasVLOp = 1;
++  let HasSEWOp = 1;
++  let HasVecPolicyOp = 1;
++}
++
++// RISCVInstrInfoVPseudos.td
++class VPseudoUnaryMask<VReg RetClass,
++                       VReg OpClass,
++                       string Constraint = "",
++                       int TargetConstraintType = 1> :
++      Pseudo<(outs GetVRegNoV0<RetClass>.R:$rd),
++             (ins GetVRegNoV0<RetClass>.R:$merge, OpClass:$rs2,
++                  VMaskOp:$vm, AVL:$vl, ixlenimm:$sew, ixlenimm:$policy), []>,
++      RISCVVPseudo {
++  let mayLoad = 0;
++  let mayStore = 0;
++  let hasSideEffects = 0;
++  let Constraints = !interleave([Constraint, "$rd = $merge"], ",");
++  let TargetOverlapConstraintType = TargetConstraintType;
++  let HasVLOp = 1;
++  let HasSEWOp = 1;
++  let HasVecPolicyOp = 1;
++  let UsesMaskPolicy = 1;
++}
++
++
++// Describes the relation of a masked pseudo to the unmasked variants.
++//    Note that all masked variants (in this table) have exactly one
++//    unmasked variant.  For all but compares, both the masked and
++//    unmasked variant have a passthru and policy operand.  For compares,
++//    neither has a policy op, and only the masked version has a passthru.
++
++// RISCVInstrInfoVPseudos.td
++class RISCVMaskedPseudo<bits<4> MaskIdx, bit ActiveAffectsRes=false> {
++  Pseudo MaskedPseudo = !cast<Pseudo>(NAME);
++  Pseudo UnmaskedPseudo = !cast<Pseudo>(!subst("_MASK", "", NAME));
++  bits<4> MaskOpIdx = MaskIdx;
++  bit ActiveElementsAffectResult = ActiveAffectsRes;
++}
++
++// RISCVInstrInfoVPseudos.td
++// This class describes information associated to the LMUL.
++class LMULInfo<int lmul, int oct, VReg regclass, VReg wregclass,
++               VReg f2regclass, VReg f4regclass, VReg f8regclass, string mx> {
++  bits<3> value = lmul; // This is encoded as the vlmul field of vtype.
++  VReg vrclass = regclass;
++  VReg wvrclass = wregclass;
++  VReg f8vrclass = f8regclass;
++  VReg f4vrclass = f4regclass;
++  VReg f2vrclass = f2regclass;
++  string MX = mx;
++  int octuple = oct;
++}
++
++// RISCVInstrInfoZvk.td
++multiclass VPseudoUnaryV_V<LMULInfo m> {
++  let VLMul = m.value in {
++    defvar suffix = "_V_" # m.MX;
++    def suffix : VPseudoUnaryNoMask<m.vrclass, m.vrclass>;
++    def suffix # "_MASK" : VPseudoUnaryMask<m.vrclass, m.vrclass>,
++                                            RISCVMaskedPseudo<MaskIdx=2>;
++  }
++}
++
++//--------------------------------
++// Class related to SchedUnary
++//--------------------------------
++
++// Common class of scheduling definitions.
++// `ReadVMergeOp` will be prepended to reads if instruction is masked.
++// `ReadVMask` will be appended to reads if instruction is masked.
++// Operands:
++//   `writes`       SchedWrites that are listed for each explicit def operand
++//                  in order.
++//   `reads`        SchedReads that are listed for each explicit use operand.
++//   `forceMasked`  Forced to be masked (e.g. Add-with-Carry Instructions).
++//   `forceMergeOpRead` Force to have read for merge operand.
++
++// RISCVInstrInfoV.td
++class SchedCommon<list<SchedWrite> writes, list<SchedRead> reads,
++                  string mx = "WorstCase", int sew = 0, bit forceMasked = 0,
++                  bit forceMergeOpRead = 0> : Sched<[]> {
++  defvar isMasked = !ne(!find(NAME, "_MASK"), -1);
++  defvar isMaskedOrForceMasked = !or(forceMasked, isMasked);
++  defvar mergeRead = !if(!or(!eq(mx, "WorstCase"), !eq(sew, 0)),
++                            !cast<SchedRead>("ReadVMergeOp_" # mx),
++                            !cast<SchedRead>("ReadVMergeOp_" # mx # "_E" #sew));
++  defvar needsMergeRead = !or(isMaskedOrForceMasked, forceMergeOpRead);
++  defvar readsWithMask =
++      !if(isMaskedOrForceMasked, !listconcat(reads, [ReadVMask]), reads);
++  defvar allReads =
++      !if(needsMergeRead, !listconcat([mergeRead], readsWithMask), reads);
++let SchedRW = !listconcat(writes, allReads);
++}
++
++// Common class of scheduling definitions for n-ary instructions.
++// The scheudling resources are relevant to LMUL and may be relevant to SEW.
++
++// RISCVInstrInfoV.td
++class SchedNary<string write, list<string> reads, string mx, int sew = 0,
++                bit forceMasked = 0, bit forceMergeOpRead = 0>
++    : SchedCommon<[!cast<SchedWrite>(
++                      !if(sew,
++                          write # "_" # mx # "_E" # sew,
++                          write # "_" # mx))],
++                  !foreach(read, reads,
++                           !cast<SchedRead>(!if(sew, read #"_" #mx #"_E" #sew,
++                                                 read #"_" #mx))),
++                  mx, sew, forceMasked, forceMergeOpRead>;
++
++class SchedUnary<string write, string read0, string mx, int sew = 0,
++                 bit forceMasked = 0, bit forceMergeOpRead = 0>:
++  SchedNary<write, [read0], mx, sew, forceMasked, forceMergeOpRead>;
++
++
++// RISCVInstrInfoZvk.td
++multiclass VPseudoVREV8 {
++  foreach m = MxList in {
++    defvar mx = m.MX;
++    defm "" : VPseudoUnaryV_V<m>,
++              SchedUnary<"WriteVREV8V", "ReadVREV8V", mx, forceMergeOpRead=true>;
++  }
++}
++
++let Predicates = [HasStdExtZvkb] in {
++  defm PseudoVREV8 : VPseudoVREV8;
++}
++
++
++//===----------------------------------------------------------------------===//
++// PseudoVREV8 Pattern Matching
++//===----------------------------------------------------------------------===//
++
++class VTypeInfo<ValueType Vec, ValueType Mas, int Sew, LMULInfo M,
++                ValueType Scal = XLenVT, RegisterClass ScalarReg = GPR> {
++  ValueType Vector = Vec;
++  ValueType Mask = Mas;
++  int SEW = Sew;
++  int Log2SEW = !logtwo(Sew);
++  VReg RegClass = M.vrclass;
++  LMULInfo LMul = M;
++  ValueType Scalar = Scal;
++  RegisterClass ScalarRegClass = ScalarReg;
++  // The pattern fragment which produces the AVL operand, representing the
++  // "natural" vector length for this type. For scalable vectors this is VLMax.
++  OutPatFrag AVL = VLMax;
++
++  string ScalarSuffix = !cond(!eq(Scal, XLenVT) : "X",
++                              !eq(Scal, f16) : "FPR16",
++                              !eq(Scal, bf16) : "FPR16",
++                              !eq(Scal, f32) : "FPR32",
++                              !eq(Scal, f64) : "FPR64");
++}
++
++defset list<VTypeInfo> AllVectors = {
++  defset list<VTypeInfo> AllIntegerVectors = {
++    defset list<VTypeInfo> NoGroupIntegerVectors = {
++      defset list<VTypeInfo> FractionalGroupIntegerVectors = {
++        def VI8MF8:  VTypeInfo<vint8mf8_t,  vbool64_t, 8,  V_MF8>;
++        def VI8MF4:  VTypeInfo<vint8mf4_t,  vbool32_t, 8,  V_MF4>;
++        def VI8MF2:  VTypeInfo<vint8mf2_t,  vbool16_t, 8,  V_MF2>;
++        def VI16MF4: VTypeInfo<vint16mf4_t, vbool64_t, 16, V_MF4>;
++        def VI16MF2: VTypeInfo<vint16mf2_t, vbool32_t, 16, V_MF2>;
++        def VI32MF2: VTypeInfo<vint32mf2_t, vbool64_t, 32, V_MF2>;
++      }
++      def VI8M1:  VTypeInfo<vint8m1_t,  vbool8_t,   8, V_M1>;
++      def VI16M1: VTypeInfo<vint16m1_t, vbool16_t, 16, V_M1>;
++      def VI32M1: VTypeInfo<vint32m1_t, vbool32_t, 32, V_M1>;
++      def VI64M1: VTypeInfo<vint64m1_t, vbool64_t, 64, V_M1>;
++    }
++    defset list<GroupVTypeInfo> GroupIntegerVectors = {
++      def VI8M2: GroupVTypeInfo<vint8m2_t, vint8m1_t, vbool4_t, 8, V_M2>;
++      def VI8M4: GroupVTypeInfo<vint8m4_t, vint8m1_t, vbool2_t, 8, V_M4>;
++      def VI8M8: GroupVTypeInfo<vint8m8_t, vint8m1_t, vbool1_t, 8, V_M8>;
++
++      def VI16M2: GroupVTypeInfo<vint16m2_t, vint16m1_t, vbool8_t, 16, V_M2>;
++      def VI16M4: GroupVTypeInfo<vint16m4_t, vint16m1_t, vbool4_t, 16, V_M4>;
++      def VI16M8: GroupVTypeInfo<vint16m8_t, vint16m1_t, vbool2_t, 16, V_M8>;
++
++      def VI32M2: GroupVTypeInfo<vint32m2_t, vint32m1_t, vbool16_t, 32, V_M2>;
++      def VI32M4: GroupVTypeInfo<vint32m4_t, vint32m1_t, vbool8_t,  32, V_M4>;
++      def VI32M8: GroupVTypeInfo<vint32m8_t, vint32m1_t, vbool4_t,  32, V_M8>;
++
++      def VI64M2: GroupVTypeInfo<vint64m2_t, vint64m1_t, vbool32_t, 64, V_M2>;
++      def VI64M4: GroupVTypeInfo<vint64m4_t, vint64m1_t, vbool16_t, 64, V_M4>;
++      def VI64M8: GroupVTypeInfo<vint64m8_t, vint64m1_t, vbool8_t,  64, V_M8>;
++    }
++  }
++}
++
++multiclass VPatUnarySDNode_V<SDPatternOperator op, string instruction_name,
++                             Predicate predicate = HasStdExtZvbb> {
++  foreach vti = AllIntegerVectors in {
++    let Predicates = !listconcat([predicate],
++                                 GetVTypePredicates<vti>.Predicates) in {
++      def : Pat<(vti.Vector (op (vti.Vector vti.RegClass:$rs1))),
++                (!cast<Instruction>(instruction_name#"_V_"#vti.LMul.MX)
++                   (vti.Vector (IMPLICIT_DEF)),
++                   vti.RegClass:$rs1,
++                   vti.AVL, vti.Log2SEW, TA_MA)>;
++    }
++  }
++}
++
++defm : VPatUnarySDNode_V<bswap, "PseudoVREV8", HasStdExtZvkb>;
++

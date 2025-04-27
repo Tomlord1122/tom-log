@@ -1,0 +1,71 @@
+Individual File Results:
+
+../TTI/rev2017/502.gcc_r_riscv_tom_custom_out.log:
+Attempts: 431
+Successes: 428
+Fails: 3
+
+../TTI/rev2017/538.imagick_r_riscv_tom_custom_out.log:
+Attempts: 8
+Successes: 8
+Fails: 0
+
+../TTI/rev2017/520.omnetpp_r_riscv_tom_custom_out.log:
+Attempts: 52
+Successes: 52
+Fails: 0
+
+../TTI/rev2017/508.namd_r_riscv_tom_custom_out.log:
+Attempts: 260
+Successes: 221
+Fails: 39
+
+../TTI/rev2017/519.lbm_r_riscv_tom_custom_out.log:
+Attempts: 7
+Successes: 5
+Fails: 2
+
+../TTI/rev2017/500.perlbench_r_riscv_tom_custom_out.log:
+Attempts: 79
+Successes: 78
+Fails: 1
+
+../TTI/rev2017/511.povray_r_riscv_tom_custom_out.log:
+Attempts: 8
+Successes: 8
+Fails: 0
+
+../TTI/rev2017/557.xz_r_riscv_tom_custom_out.log:
+Attempts: 53
+Successes: 51
+Fails: 2
+
+../TTI/rev2017/510.parest_r_riscv_tom_custom_out.log:
+Attempts: 3572
+Successes: 3020
+Fails: 552
+
+../TTI/rev2017/505.mcf_r_riscv_tom_custom_out.log:
+Attempts: 31
+Successes: 28
+Fails: 3
+
+../TTI/rev2017/541.leela_r_riscv_tom_custom_out.log:
+Attempts: 24
+Successes: 24
+Fails: 0
+
+../TTI/rev2017/525.x264_r_riscv_tom_custom_out.log:
+Attempts: 72
+Successes: 72
+Fails: 0
+
+../TTI/rev2017/544.nab_r_riscv_tom_custom_out.log:
+Attempts: 25
+Successes: 25
+Fails: 0
+
+Total Results:
+Total Attempts: 4622
+Total Successes: 4020
+Total Fails: 602
