@@ -20,7 +20,7 @@ benchmark_nums = [508, 510, 511, 519, 538, 544, 500, 502, 520, 525, 531, 541, 55
 benchmark_num_strs = [str(num) for num in benchmark_nums]
 
 # 設定最大同時執行的執行緒數量
-MAX_THREADS = 3
+MAX_THREADS = 8
 
 # Log 分類的目標基礎路徑
 LOG_TARGET_BASE_PATH = "/home/tomlord/workspace/Speckle-2017"
