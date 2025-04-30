@@ -26,8 +26,8 @@ def change_build_directory_names():
                                 # Change make.err name to benchmark+arch
                                 if arch.startswith('riscv_tom_custom') :
                                 # if arch.startswith('riscv_tom_custom') or arch.startswith('riscv_tom_after'):
-                                    # new_name_out = os.path.join('/home/tomlord/workspace/Tom/TTI/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
-                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_IR.ll")
+                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
+                                    new_name_err = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_IR.ll")
                                 elif arch.startswith('arm_tom_after'):
                                     new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
                                 else:
@@ -35,6 +35,7 @@ def change_build_directory_names():
                                 try:
                                     # out.log -------------------------------------
                                     shutil.copyfile(make_out_path, new_name_out)
+                                    shutil.copyfile(make_err_path, new_name_err)
                                     logging.info(f"Successfully renamed {make_out_path} to {new_name_out}")
                             
                                 except OSError as e:
