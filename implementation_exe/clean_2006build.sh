@@ -14,6 +14,7 @@ echo "Searching for and deleting 'build' directories..."
 # Find all directories named 'build' directly under any benchmark directory in TARGET_DIR
 find "${TARGET_DIR}" -type d -path "*/CPU2006/*/run/riscv_tom_custom" -exec rm -rf {} \; 2>/dev/null || true
 find "${TARGET_DIR}" -type d -path "*/CPU2006/*/run/riscv_tom_after" -exec rm -rf {} \; 2>/dev/null || true
+find "${TARGET_DIR}" -type d -path "*/CPU2006/*/run/arm_tom_after" -exec rm -rf {} \; 2>/dev/null || true
 
 echo "Cleanup complete."
 exit 0

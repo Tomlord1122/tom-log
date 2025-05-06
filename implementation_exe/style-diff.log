@@ -1,0 +1,15 @@
+
+Analyzing costs by style (from common functions) for 'origin-cost' and 'arm'...
+
+Benchmark Style Cost Comparison (Aggregated from Common Functions):
+--------------------------------------------------------------------------------------------------------------
+Benchmark                 Style                            RISC-V              Arm         Diff        Diff%
+--------------------------------------------------------------------------------------------------------------
+400.perlbench             Widen_Reverse                   1847.00             468.00     -1379.00      -74.66%
+401.bzip2                 Widen_Reverse                    385.00             120.00      -265.00      -68.83%
+403.gcc                   Widen_Reverse                    170.00              26.00      -144.00      -84.71%
+450.soplex                Widen_Reverse                    508.00              96.00      -412.00      -81.10%
+453.povray                Widen_Reverse                    374.00              88.00      -286.00      -76.47%
+456.hmmer                 Widen_Reverse                    135.00              53.00       -82.00      -60.74%
+464.h264ref               Widen_Reverse                     90.00              18.00       -72.00      -80.00%
+--------------------------------------------------------------------------------------------------------------
