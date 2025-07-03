@@ -1,0 +1,2021 @@
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o attacks.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                attacks.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o book.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                book.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o crazy.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                crazy.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o draw.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                draw.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o ecache.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                ecache.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o epd.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                epd.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o eval.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                eval.c
+@@ Instruction =>  %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MemoryOpCost(1)
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<64> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%2>, ir<1>
+    CLONE ir<%and4> = and ir<%2>, ir<7>
+    CLONE ir<%sub> = sub nsw ir<%and>, ir<%and4>
+    CLONE ir<%3> = call @llvm.abs.i32(ir<%sub>, ir<true>)
+    CLONE ir<%shr5> = lshr ir<%2>, ir<3>
+    CLONE ir<%sub6> = sub nsw ir<%shr>, ir<%shr5>
+    CLONE ir<%4> = call @llvm.abs.i32(ir<%sub6>, ir<true>)
+    CLONE ir<%add> = add nuw nsw ir<%3>, ir<%4>
+    CLONE ir<%arrayidx10> = getelementptr inbounds ir<@upscale>, ir<0>, ir<%indvars.iv>
+    CLONE ir<%5> = load ir<%arrayidx10>
+    CLONE ir<%idxprom11> = sext ir<%5>
+    CLONE ir<%arrayidx12> = getelementptr inbounds ir<@rookdistance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    CLONE store ir<%add>, ir<%arrayidx12>
+    CLONE ir<%cond> = call @llvm.umax.i32(ir<%3>, ir<%4>)
+    CLONE ir<%arrayidx21> = getelementptr inbounds ir<@distance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    CLONE store ir<%cond>, ir<%arrayidx21>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<64>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<64>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.inc22>, scalar.ph
+
+ir-bb<for.inc22>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={2,4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<64> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%2>, ir<1>
+    WIDEN ir<%and4> = and ir<%2>, ir<7>
+    WIDEN ir<%sub> = sub nsw ir<%and>, ir<%and4>
+    WIDEN-CALL ir<%3> = call @llvm.abs.i32(ir<%sub>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%shr5> = lshr ir<%2>, ir<3>
+    WIDEN ir<%sub6> = sub nsw ir<%shr>, ir<%shr5>
+    WIDEN-CALL ir<%4> = call @llvm.abs.i32(ir<%sub6>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%add> = add nuw nsw ir<%3>, ir<%4>
+    CLONE ir<%arrayidx10> = getelementptr inbounds ir<@upscale>, ir<0>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx10>
+    WIDEN ir<%5> = load vp<%3>
+    WIDEN-CAST ir<%idxprom11> = sext  ir<%5> to i64
+    REPLICATE ir<%arrayidx12> = getelementptr inbounds ir<@rookdistance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    REPLICATE store ir<%add>, ir<%arrayidx12>
+    WIDEN-CALL ir<%cond> = call @llvm.umax.i32(ir<%3>, ir<%4>) (using vector intrinsic)
+    REPLICATE ir<%arrayidx21> = getelementptr inbounds ir<@distance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    REPLICATE store ir<%cond>, ir<%arrayidx21>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<64>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<64>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.inc22>, scalar.ph
+
+ir-bb<for.inc22>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<64> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%2>, ir<1>
+    WIDEN ir<%and4> = and ir<%2>, ir<7>
+    WIDEN ir<%sub> = sub nsw ir<%and>, ir<%and4>
+    WIDEN-CALL ir<%3> = call @llvm.abs.i32(ir<%sub>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%shr5> = lshr ir<%2>, ir<3>
+    WIDEN ir<%sub6> = sub nsw ir<%shr>, ir<%shr5>
+    WIDEN-CALL ir<%4> = call @llvm.abs.i32(ir<%sub6>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%add> = add nuw nsw ir<%3>, ir<%4>
+    CLONE ir<%arrayidx10> = getelementptr inbounds ir<@upscale>, ir<0>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx10>
+    WIDEN ir<%5> = load vp<%3>
+    WIDEN-CAST ir<%idxprom11> = sext  ir<%5> to i64
+    WIDEN-GEP Inv[Inv][Inv][Var] ir<%arrayidx12> = getelementptr inbounds ir<@rookdistance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    REPLICATE store ir<%add>, ir<%arrayidx12>
+    WIDEN-CALL ir<%cond> = call @llvm.umax.i32(ir<%3>, ir<%4>) (using vector intrinsic)
+    WIDEN-GEP Inv[Inv][Inv][Var] ir<%arrayidx21> = getelementptr inbounds ir<@distance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    REPLICATE store ir<%cond>, ir<%arrayidx21>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<64>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<64>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.inc22>, scalar.ph
+
+ir-bb<for.inc22>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<64> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%2>, ir<1>
+    WIDEN ir<%and4> = and ir<%2>, ir<7>
+    WIDEN ir<%sub> = sub nsw ir<%and>, ir<%and4>
+    WIDEN-CALL ir<%3> = call @llvm.abs.i32(ir<%sub>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%shr5> = lshr ir<%2>, ir<3>
+    WIDEN ir<%sub6> = sub nsw ir<%shr>, ir<%shr5>
+    WIDEN-CALL ir<%4> = call @llvm.abs.i32(ir<%sub6>, ir<true>) (using vector intrinsic)
+    WIDEN ir<%add> = add nuw nsw ir<%3>, ir<%4>
+    CLONE ir<%arrayidx10> = getelementptr inbounds ir<@upscale>, ir<0>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx10>
+    WIDEN ir<%5> = load vp<%3>
+    WIDEN-CAST ir<%idxprom11> = sext  ir<%5> to i64
+    WIDEN-GEP Inv[Inv][Inv][Var] ir<%arrayidx12> = getelementptr inbounds ir<@rookdistance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    WIDEN store ir<%arrayidx12>, ir<%add>
+    WIDEN-CALL ir<%cond> = call @llvm.umax.i32(ir<%3>, ir<%4>) (using vector intrinsic)
+    WIDEN-GEP Inv[Inv][Inv][Var] ir<%arrayidx21> = getelementptr inbounds ir<@distance>, ir<0>, ir<%idxprom7>, ir<%idxprom11>
+    WIDEN store ir<%arrayidx21>, ir<%cond>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<64>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<64>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.inc22>, scalar.ph
+
+ir-bb<for.inc22>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of 3 for VF 1 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of 3 for VF 1 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Scalar loop costs: 21.
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Vector loop of width 2 costs: 35
+A is not scalable.	B is not scalable.	
+RTCostA: 2272, RTCostB: 1344
+A is not scalable.	B is not scalable.	
+RTCostA: 2272, RTCostB: 1344
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Vector loop of width 4 costs: 33
+A is not scalable.	B is not scalable.	
+RTCostA: 2144, RTCostB: 1344
+A is not scalable.	B is not scalable.	
+RTCostA: 2144, RTCostB: 1344
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 1344
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 1344
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 2 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 2 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Vector loop of width vscale x 2 costs: 24
+A is scalable.	B is not scalable.	
+RTCostA: 1552, RTCostB: 1344
+A is scalable.	B is not scalable.	
+RTCostA: 1552, RTCostB: 1344
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.cond1.preheader ], [ %indvars.iv.next, %for.body3 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %2 = trunc nuw nsw i64 %indvars.iv to i32 of type:trunc
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %and4 = and i32 %2, 7 of type:and
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %sub = sub nsw i32 %and, %and4 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 4 For instruction:   %3 = tail call i32 @llvm.abs.i32(i32 %sub, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %shr5 = lshr i32 %2, 3 of type:lshr
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %sub6 = sub nsw i32 %shr, %shr5 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 4 For instruction:   %4 = tail call i32 @llvm.abs.i32(i32 %sub6, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %add = add nuw nsw i32 %3, %4 of type:add
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx10 = getelementptr inbounds [64 x i32], ptr @upscale, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %5 = load i32, ptr %arrayidx10, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom11 = sext i32 %5 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx12 = getelementptr inbounds [144 x [144 x i32]], ptr @rookdistance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i32 %add, ptr %arrayidx12, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %cond = tail call i32 @llvm.umax.i32(i32 %3, i32 %4) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx21 = getelementptr inbounds [144 x [144 x i32]], ptr @distance, i64 0, i64 %idxprom7, i64 %idxprom11 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i32 %cond, ptr %arrayidx21, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 64 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.inc22, label %for.body3 of type:br
+LV: Vector loop of width vscale x 4 costs: 22
+A is scalable.	B is not scalable.	
+RTCostA: 1440, RTCostB: 1344
+A is scalable.	B is not scalable.	
+RTCostA: 1440, RTCostB: 1344
+LV: Selecting VF: 1 With Cost: 21.
+maxbefore: 2
+maxafter: 2
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 2 -> VectorType: <8 x i32> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 2 -> VectorType: <8 x i32> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 4 -> VectorType: <16 x i32> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 4 -> VectorType: <16 x i32> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 2 -> VectorType: <8 x i32> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 2 -> VectorType: <8 x i32> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 4 -> VectorType: <16 x i32> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 4 -> VectorType: <16 x i32> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<144> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %indvars.iv286 = phi 0, %indvars.iv.next287, ir<1>
+    CLONE ir<%arrayidx34> = getelementptr inbounds ir<@Xrank>, ir<0>, ir<%indvars.iv286>
+    CLONE ir<%8> = load ir<%arrayidx34>
+    CLONE ir<%sub35> = sub nsw ir<%6>, ir<%8>
+    CLONE ir<%9> = call @llvm.abs.i32(ir<%sub35>, ir<true>)
+    CLONE ir<%arrayidx39> = getelementptr inbounds ir<@Xfile>, ir<0>, ir<%indvars.iv286>
+    CLONE ir<%10> = load ir<%arrayidx39>
+    CLONE ir<%sub40> = sub nsw ir<%7>, ir<%10>
+    CLONE ir<%11> = call @llvm.abs.i32(ir<%sub40>, ir<true>)
+    CLONE ir<%.> = call @llvm.umax.i32(ir<%9>, ir<%11>)
+    CLONE ir<%idxprom56> = zext nneg ir<%.>
+    CLONE ir<%arrayidx57> = getelementptr inbounds ir<@pre_p_tropism>, ir<0>, ir<%idxprom56>
+    CLONE ir<%12> = load ir<%arrayidx57>
+    CLONE ir<%conv> = trunc ir<%12>
+    CLONE ir<%arrayidx61> = getelementptr inbounds ir<@p_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    CLONE store ir<%conv>, ir<%arrayidx61>
+    CLONE ir<%arrayidx89> = getelementptr inbounds ir<@pre_b_tropism>, ir<0>, ir<%idxprom56>
+    CLONE ir<%13> = load ir<%arrayidx89>
+    CLONE ir<%conv90> = trunc ir<%13>
+    CLONE ir<%arrayidx94> = getelementptr inbounds ir<@b_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    CLONE store ir<%conv90>, ir<%arrayidx94>
+    CLONE ir<%arrayidx122> = getelementptr inbounds ir<@pre_n_tropism>, ir<0>, ir<%idxprom56>
+    CLONE ir<%14> = load ir<%arrayidx122>
+    CLONE ir<%conv123> = trunc ir<%14>
+    CLONE ir<%arrayidx127> = getelementptr inbounds ir<@n_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    CLONE store ir<%conv123>, ir<%arrayidx127>
+    CLONE ir<%arrayidx155> = getelementptr inbounds ir<@pre_r_tropism>, ir<0>, ir<%idxprom56>
+    CLONE ir<%15> = load ir<%arrayidx155>
+    CLONE ir<%conv156> = trunc ir<%15>
+    CLONE ir<%arrayidx160> = getelementptr inbounds ir<@r_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    CLONE store ir<%conv156>, ir<%arrayidx160>
+    CLONE ir<%arrayidx188> = getelementptr inbounds ir<@pre_q_tropism>, ir<0>, ir<%idxprom56>
+    CLONE ir<%16> = load ir<%arrayidx188>
+    CLONE ir<%conv189> = trunc ir<%16>
+    CLONE ir<%arrayidx193> = getelementptr inbounds ir<@q_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    CLONE store ir<%conv189>, ir<%arrayidx193>
+    CLONE ir<%indvars.iv.next287> = add nuw nsw ir<%indvars.iv286>, ir<1>
+    CLONE ir<%exitcond289.not> = icmp eq ir<%indvars.iv.next287>, ir<144>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<144>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.inc197>, scalar.ph
+
+ir-bb<for.inc197>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 2 to 32==========
+VPlan 'Initial VPlan for VF={2,4,8,16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<144> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%10>
+    WIDEN-INDUCTION %indvars.iv286 = phi 0, %indvars.iv.next287, ir<1>
+    CLONE ir<%arrayidx34> = getelementptr inbounds ir<@Xrank>, ir<0>, ir<%indvars.iv286>
+    vp<%3> = vector-pointer ir<%arrayidx34>
+    WIDEN ir<%8> = load vp<%3>
+    WIDEN ir<%sub35> = sub nsw ir<%6>, ir<%8>
+    WIDEN-CALL ir<%9> = call @llvm.abs.i32(ir<%sub35>, ir<true>) (using vector intrinsic)
+    CLONE ir<%arrayidx39> = getelementptr inbounds ir<@Xfile>, ir<0>, ir<%indvars.iv286>
+    vp<%4> = vector-pointer ir<%arrayidx39>
+    WIDEN ir<%10> = load vp<%4>
+    WIDEN ir<%sub40> = sub nsw ir<%7>, ir<%10>
+    WIDEN-CALL ir<%11> = call @llvm.abs.i32(ir<%sub40>, ir<true>) (using vector intrinsic)
+    WIDEN-CALL ir<%.> = call @llvm.umax.i32(ir<%9>, ir<%11>) (using vector intrinsic)
+    WIDEN-CAST ir<%idxprom56> = zext  nneg ir<%.> to i64
+    REPLICATE ir<%arrayidx57> = getelementptr inbounds ir<@pre_p_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%12> = load ir<%arrayidx57>
+    WIDEN-CAST ir<%conv> = trunc  ir<%12> to i8
+    CLONE ir<%arrayidx61> = getelementptr inbounds ir<@p_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%5> = vector-pointer ir<%arrayidx61>
+    WIDEN store vp<%5>, ir<%conv>
+    REPLICATE ir<%arrayidx89> = getelementptr inbounds ir<@pre_b_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%13> = load ir<%arrayidx89>
+    WIDEN-CAST ir<%conv90> = trunc  ir<%13> to i8
+    CLONE ir<%arrayidx94> = getelementptr inbounds ir<@b_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%6> = vector-pointer ir<%arrayidx94>
+    WIDEN store vp<%6>, ir<%conv90>
+    REPLICATE ir<%arrayidx122> = getelementptr inbounds ir<@pre_n_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%14> = load ir<%arrayidx122>
+    WIDEN-CAST ir<%conv123> = trunc  ir<%14> to i8
+    CLONE ir<%arrayidx127> = getelementptr inbounds ir<@n_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%7> = vector-pointer ir<%arrayidx127>
+    WIDEN store vp<%7>, ir<%conv123>
+    REPLICATE ir<%arrayidx155> = getelementptr inbounds ir<@pre_r_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%15> = load ir<%arrayidx155>
+    WIDEN-CAST ir<%conv156> = trunc  ir<%15> to i8
+    CLONE ir<%arrayidx160> = getelementptr inbounds ir<@r_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%8> = vector-pointer ir<%arrayidx160>
+    WIDEN store vp<%8>, ir<%conv156>
+    REPLICATE ir<%arrayidx188> = getelementptr inbounds ir<@pre_q_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%16> = load ir<%arrayidx188>
+    WIDEN-CAST ir<%conv189> = trunc  ir<%16> to i8
+    CLONE ir<%arrayidx193> = getelementptr inbounds ir<@q_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%9> = vector-pointer ir<%arrayidx193>
+    WIDEN store vp<%9>, ir<%conv189>
+    CLONE ir<%indvars.iv.next287> = add nuw nsw ir<%indvars.iv286>, ir<1>
+    CLONE ir<%exitcond289.not> = icmp eq ir<%indvars.iv.next287>, ir<144>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%10> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%10>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%12> = icmp eq ir<144>, vp<%1>
+  EMIT branch-on-cond vp<%12>
+Successor(s): ir-bb<for.inc197>, scalar.ph
+
+ir-bb<for.inc197>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<144> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%10>
+    WIDEN-INDUCTION %indvars.iv286 = phi 0, %indvars.iv.next287, ir<1>
+    CLONE ir<%arrayidx34> = getelementptr inbounds ir<@Xrank>, ir<0>, ir<%indvars.iv286>
+    vp<%3> = vector-pointer ir<%arrayidx34>
+    WIDEN ir<%8> = load vp<%3>
+    WIDEN ir<%sub35> = sub nsw ir<%6>, ir<%8>
+    WIDEN-CALL ir<%9> = call @llvm.abs.i32(ir<%sub35>, ir<true>) (using vector intrinsic)
+    CLONE ir<%arrayidx39> = getelementptr inbounds ir<@Xfile>, ir<0>, ir<%indvars.iv286>
+    vp<%4> = vector-pointer ir<%arrayidx39>
+    WIDEN ir<%10> = load vp<%4>
+    WIDEN ir<%sub40> = sub nsw ir<%7>, ir<%10>
+    WIDEN-CALL ir<%11> = call @llvm.abs.i32(ir<%sub40>, ir<true>) (using vector intrinsic)
+    WIDEN-CALL ir<%.> = call @llvm.umax.i32(ir<%9>, ir<%11>) (using vector intrinsic)
+    WIDEN-CAST ir<%idxprom56> = zext  nneg ir<%.> to i64
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx57> = getelementptr inbounds ir<@pre_p_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%12> = load ir<%arrayidx57>
+    WIDEN-CAST ir<%conv> = trunc  ir<%12> to i8
+    CLONE ir<%arrayidx61> = getelementptr inbounds ir<@p_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%5> = vector-pointer ir<%arrayidx61>
+    WIDEN store vp<%5>, ir<%conv>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx89> = getelementptr inbounds ir<@pre_b_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%13> = load ir<%arrayidx89>
+    WIDEN-CAST ir<%conv90> = trunc  ir<%13> to i8
+    CLONE ir<%arrayidx94> = getelementptr inbounds ir<@b_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%6> = vector-pointer ir<%arrayidx94>
+    WIDEN store vp<%6>, ir<%conv90>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx122> = getelementptr inbounds ir<@pre_n_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%14> = load ir<%arrayidx122>
+    WIDEN-CAST ir<%conv123> = trunc  ir<%14> to i8
+    CLONE ir<%arrayidx127> = getelementptr inbounds ir<@n_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%7> = vector-pointer ir<%arrayidx127>
+    WIDEN store vp<%7>, ir<%conv123>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx155> = getelementptr inbounds ir<@pre_r_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%15> = load ir<%arrayidx155>
+    WIDEN-CAST ir<%conv156> = trunc  ir<%15> to i8
+    CLONE ir<%arrayidx160> = getelementptr inbounds ir<@r_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%8> = vector-pointer ir<%arrayidx160>
+    WIDEN store vp<%8>, ir<%conv156>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx188> = getelementptr inbounds ir<@pre_q_tropism>, ir<0>, ir<%idxprom56>
+    REPLICATE ir<%16> = load ir<%arrayidx188>
+    WIDEN-CAST ir<%conv189> = trunc  ir<%16> to i8
+    CLONE ir<%arrayidx193> = getelementptr inbounds ir<@q_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%9> = vector-pointer ir<%arrayidx193>
+    WIDEN store vp<%9>, ir<%conv189>
+    CLONE ir<%indvars.iv.next287> = add nuw nsw ir<%indvars.iv286>, ir<1>
+    CLONE ir<%exitcond289.not> = icmp eq ir<%indvars.iv.next287>, ir<144>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%10> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%10>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%12> = icmp eq ir<144>, vp<%1>
+  EMIT branch-on-cond vp<%12>
+Successor(s): ir-bb<for.inc197>, scalar.ph
+
+ir-bb<for.inc197>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: initialize_eval' from eval.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<144> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%10>
+    WIDEN-INDUCTION %indvars.iv286 = phi 0, %indvars.iv.next287, ir<1>
+    CLONE ir<%arrayidx34> = getelementptr inbounds ir<@Xrank>, ir<0>, ir<%indvars.iv286>
+    vp<%3> = vector-pointer ir<%arrayidx34>
+    WIDEN ir<%8> = load vp<%3>
+    WIDEN ir<%sub35> = sub nsw ir<%6>, ir<%8>
+    WIDEN-CALL ir<%9> = call @llvm.abs.i32(ir<%sub35>, ir<true>) (using vector intrinsic)
+    CLONE ir<%arrayidx39> = getelementptr inbounds ir<@Xfile>, ir<0>, ir<%indvars.iv286>
+    vp<%4> = vector-pointer ir<%arrayidx39>
+    WIDEN ir<%10> = load vp<%4>
+    WIDEN ir<%sub40> = sub nsw ir<%7>, ir<%10>
+    WIDEN-CALL ir<%11> = call @llvm.abs.i32(ir<%sub40>, ir<true>) (using vector intrinsic)
+    WIDEN-CALL ir<%.> = call @llvm.umax.i32(ir<%9>, ir<%11>) (using vector intrinsic)
+    WIDEN-CAST ir<%idxprom56> = zext  nneg ir<%.> to i64
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx57> = getelementptr inbounds ir<@pre_p_tropism>, ir<0>, ir<%idxprom56>
+    WIDEN ir<%12> = load ir<%arrayidx57>
+    WIDEN-CAST ir<%conv> = trunc  ir<%12> to i8
+    CLONE ir<%arrayidx61> = getelementptr inbounds ir<@p_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%5> = vector-pointer ir<%arrayidx61>
+    WIDEN store vp<%5>, ir<%conv>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx89> = getelementptr inbounds ir<@pre_b_tropism>, ir<0>, ir<%idxprom56>
+    WIDEN ir<%13> = load ir<%arrayidx89>
+    WIDEN-CAST ir<%conv90> = trunc  ir<%13> to i8
+    CLONE ir<%arrayidx94> = getelementptr inbounds ir<@b_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%6> = vector-pointer ir<%arrayidx94>
+    WIDEN store vp<%6>, ir<%conv90>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx122> = getelementptr inbounds ir<@pre_n_tropism>, ir<0>, ir<%idxprom56>
+    WIDEN ir<%14> = load ir<%arrayidx122>
+    WIDEN-CAST ir<%conv123> = trunc  ir<%14> to i8
+    CLONE ir<%arrayidx127> = getelementptr inbounds ir<@n_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%7> = vector-pointer ir<%arrayidx127>
+    WIDEN store vp<%7>, ir<%conv123>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx155> = getelementptr inbounds ir<@pre_r_tropism>, ir<0>, ir<%idxprom56>
+    WIDEN ir<%15> = load ir<%arrayidx155>
+    WIDEN-CAST ir<%conv156> = trunc  ir<%15> to i8
+    CLONE ir<%arrayidx160> = getelementptr inbounds ir<@r_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%8> = vector-pointer ir<%arrayidx160>
+    WIDEN store vp<%8>, ir<%conv156>
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx188> = getelementptr inbounds ir<@pre_q_tropism>, ir<0>, ir<%idxprom56>
+    WIDEN ir<%16> = load ir<%arrayidx188>
+    WIDEN-CAST ir<%conv189> = trunc  ir<%16> to i8
+    CLONE ir<%arrayidx193> = getelementptr inbounds ir<@q_tropism>, ir<0>, ir<%indvars.iv290>, ir<%indvars.iv286>
+    vp<%9> = vector-pointer ir<%arrayidx193>
+    WIDEN store vp<%9>, ir<%conv189>
+    CLONE ir<%indvars.iv.next287> = add nuw nsw ir<%indvars.iv286>, ir<1>
+    CLONE ir<%exitcond289.not> = icmp eq ir<%indvars.iv.next287>, ir<144>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%10> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%10>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%12> = icmp eq ir<144>, vp<%1>
+  EMIT branch-on-cond vp<%12>
+Successor(s): ir-bb<for.inc197>, scalar.ph
+
+ir-bb<for.inc197>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 3 for VF 1 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 3 for VF 1 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Scalar loop costs: 36.
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width 2 costs: 89
+A is not scalable.	B is not scalable.	
+RTCostA: 12888, RTCostB: 5184
+A is not scalable.	B is not scalable.	
+RTCostA: 12888, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width 4 costs: 81
+A is not scalable.	B is not scalable.	
+RTCostA: 11736, RTCostB: 5184
+A is not scalable.	B is not scalable.	
+RTCostA: 11736, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width 8 costs: 78
+A is not scalable.	B is not scalable.	
+RTCostA: 11358, RTCostB: 5184
+A is not scalable.	B is not scalable.	
+RTCostA: 11358, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 3 for VF 16 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 3 for VF 16 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 3 for VF 16 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 3 for VF 16 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 3 for VF 16 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF 16 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width 16 costs: 78
+A is not scalable.	B is not scalable.	
+RTCostA: 11250, RTCostB: 5184
+A is not scalable.	B is not scalable.	
+RTCostA: 11250, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 5184
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 2 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 2 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width vscale x 2 costs: 55
+A is scalable.	B is not scalable.	
+RTCostA: 8028, RTCostB: 5184
+A is scalable.	B is not scalable.	
+RTCostA: 8028, RTCostB: 5184
+
+-----------------Function that is being costed:'initialize_eval' from eval.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv286 = phi i64 [ 0, %for.cond28.preheader ], [ %indvars.iv.next287, %for.body30 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx34 = getelementptr inbounds [144 x i32], ptr @Xrank, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %8 = load i32, ptr %arrayidx34, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %sub35 = sub nsw i32 %6, %8 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 4 For instruction:   %9 = tail call i32 @llvm.abs.i32(i32 %sub35, i1 true) of type:call
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx39 = getelementptr inbounds [144 x i32], ptr @Xfile, i64 0, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %10 = load i32, ptr %arrayidx39, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %sub40 = sub nsw i32 %7, %10 of type:sub
+LV: Found an estimated cost of 3 for VF vscale x 4 For instruction:   %11 = tail call i32 @llvm.abs.i32(i32 %sub40, i1 true) of type:call
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %. = tail call i32 @llvm.umax.i32(i32 %9, i32 %11) of type:call
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom56 = zext nneg i32 %. to i64 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx57 = getelementptr inbounds [9 x i32], ptr @pre_p_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %12 = load i32, ptr %arrayidx57, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv = trunc i32 %12 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx61 = getelementptr inbounds [144 x [144 x i8]], ptr @p_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv, ptr %arrayidx61, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx89 = getelementptr inbounds [9 x i32], ptr @pre_b_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %13 = load i32, ptr %arrayidx89, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv90 = trunc i32 %13 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx94 = getelementptr inbounds [144 x [144 x i8]], ptr @b_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv90, ptr %arrayidx94, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx122 = getelementptr inbounds [9 x i32], ptr @pre_n_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %14 = load i32, ptr %arrayidx122, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv123 = trunc i32 %14 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx127 = getelementptr inbounds [144 x [144 x i8]], ptr @n_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv123, ptr %arrayidx127, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx155 = getelementptr inbounds [9 x i32], ptr @pre_r_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %15 = load i32, ptr %arrayidx155, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv156 = trunc i32 %15 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx160 = getelementptr inbounds [144 x [144 x i8]], ptr @r_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv156, ptr %arrayidx160, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx188 = getelementptr inbounds [9 x i32], ptr @pre_q_tropism, i64 0, i64 %idxprom56 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %16 = load i32, ptr %arrayidx188, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv189 = trunc i32 %16 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx193 = getelementptr inbounds [144 x [144 x i8]], ptr @q_tropism, i64 0, i64 %indvars.iv290, i64 %indvars.iv286 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv189, ptr %arrayidx193, align 1, !tbaa !10 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %indvars.iv.next287 = add nuw nsw i64 %indvars.iv286, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond289.not = icmp eq i64 %indvars.iv.next287, 144 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond289.not, label %for.inc197, label %for.body30 of type:br
+LV: Vector loop of width vscale x 4 costs: 53
+A is scalable.	B is not scalable.	
+RTCostA: 7650, RTCostB: 5184
+A is scalable.	B is not scalable.	
+RTCostA: 7650, RTCostB: 5184
+LV: Selecting VF: 1 With Cost: 36.
+maxbefore: 2
+maxafter: 2
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o leval.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                leval.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o moves.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                moves.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o neval.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                neval.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o partner.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                partner.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o proof.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                proof.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o rcfile.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                rcfile.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o search.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                search.c
+@@ Instruction =>  %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MemoryOpCost(1)
+========== Loop: think' from search.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body325.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %num_moves.0 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv906 = phi 0, %indvars.iv.next907, ir<1>
+    WIDEN-REDUCTION-PHI ir<%k.1837> = phi ir<%k.0.ph>, ir<%spec.select>
+    CLONE ir<%arrayidx327> = getelementptr inbounds ir<@rootlosers>, ir<0>, ir<%indvars.iv906>
+    CLONE ir<%72> = load ir<%arrayidx327>
+    CLONE ir<%tobool328.not> = icmp ne ir<%72>, ir<0>
+    CLONE ir<%inc330> = zext ir<%tobool328.not>
+    CLONE ir<%spec.select> = add ir<%k.1837>, ir<%inc330>
+    CLONE ir<%indvars.iv.next907> = add nuw nsw ir<%indvars.iv906>, ir<1>
+    CLONE ir<%exitcond910.not> = icmp eq ir<%indvars.iv.next907>, ir<%wide.trip.count909>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = compute-reduction-result ir<%k.1837>, ir<%spec.select>
+  EMIT vp<%7> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end334.loopexit>, scalar.ph
+
+ir-bb<for.end334.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+
+Live-out i32 %spec.select.lcssa = vp<%6>
+}
+
+========== Loop: think' from search.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={2,4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body325.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %num_moves.0 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION %indvars.iv906 = phi 0, %indvars.iv.next907, ir<1>
+    WIDEN-REDUCTION-PHI ir<%k.1837> = phi ir<%k.0.ph>, ir<%spec.select>
+    CLONE ir<%arrayidx327> = getelementptr inbounds ir<@rootlosers>, ir<0>, ir<%indvars.iv906>
+    vp<%4> = vector-pointer ir<%arrayidx327>
+    WIDEN ir<%72> = load vp<%4>
+    WIDEN ir<%tobool328.not> = icmp ne ir<%72>, ir<0>
+    WIDEN-CAST ir<%inc330> = zext  ir<%tobool328.not> to i32
+    WIDEN ir<%spec.select> = add ir<%k.1837>, ir<%inc330>
+    CLONE ir<%indvars.iv.next907> = add nuw nsw ir<%indvars.iv906>, ir<1>
+    CLONE ir<%exitcond910.not> = icmp eq ir<%indvars.iv.next907>, ir<%wide.trip.count909>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%5> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = compute-reduction-result ir<%k.1837>, ir<%spec.select>
+  EMIT vp<%8> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.end334.loopexit>, scalar.ph
+
+ir-bb<for.end334.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+
+Live-out i32 %spec.select.lcssa = vp<%7>
+}
+
+========== Loop: think' from search.c==========
+========== VPlan for Vector Factor Range: 1 to 8==========
+VPlan 'Initial VPlan for VF={vscale x 1,vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body325.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %num_moves.0 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION %indvars.iv906 = phi 0, %indvars.iv.next907, ir<1>
+    WIDEN-REDUCTION-PHI ir<%k.1837> = phi ir<%k.0.ph>, ir<%spec.select>
+    CLONE ir<%arrayidx327> = getelementptr inbounds ir<@rootlosers>, ir<0>, ir<%indvars.iv906>
+    vp<%4> = vector-pointer ir<%arrayidx327>
+    WIDEN ir<%72> = load vp<%4>
+    WIDEN ir<%tobool328.not> = icmp ne ir<%72>, ir<0>
+    WIDEN-CAST ir<%inc330> = zext  ir<%tobool328.not> to i32
+    WIDEN ir<%spec.select> = add ir<%k.1837>, ir<%inc330>
+    CLONE ir<%indvars.iv.next907> = add nuw nsw ir<%indvars.iv906>, ir<1>
+    CLONE ir<%exitcond910.not> = icmp eq ir<%indvars.iv.next907>, ir<%wide.trip.count909>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%5> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = compute-reduction-result ir<%k.1837>, ir<%spec.select>
+  EMIT vp<%8> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.end334.loopexit>, scalar.ph
+
+ir-bb<for.end334.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+
+Live-out i32 %spec.select.lcssa = vp<%7>
+}
+
+
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Scalar loop costs: 7.
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Vector loop of width 2 costs: 3
+A is not scalable.	B is not scalable.	
+RTCostA: 6442450945, RTCostB: 15032385529
+Candidate VF: 2 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 6442450945, RTCostB: 15032385529
+Update Chosen Factor with Candidate VF: 2 and ChosenFactor VF: 1
+
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Vector loop of width 4 costs: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 3221225487, RTCostB: 15032385529
+Candidate VF: 4 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 3221225487, RTCostB: 6442450945
+Update Chosen Factor with Candidate VF: 4 and ChosenFactor VF: 2
+
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 15032385529
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 3221225487
+
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Vector loop of width vscale x 2 costs: 1
+A is scalable.	B is not scalable.	
+RTCostA: 3221225487, RTCostB: 15032385529
+Candidate VF: vscale x 2 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 3221225487, RTCostB: 3221225487
+Update Chosen Factor with Candidate VF: vscale x 2 and ChosenFactor VF: 4
+
+-----------------Function that is being costed:'think' from search.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv906 = phi i64 [ 0, %for.body325.preheader ], [ %indvars.iv.next907, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %k.1837 = phi i32 [ %k.0.ph, %for.body325.preheader ], [ %spec.select, %for.body325 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx327 = getelementptr inbounds [300 x i32], ptr @rootlosers, i64 0, i64 %indvars.iv906 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %72 = load i32, ptr %arrayidx327, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %tobool328.not = icmp ne i32 %72, 0 of type:icmp
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %inc330 = zext i1 %tobool328.not to i32 of type:zext
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %spec.select = add nsw i32 %k.1837, %inc330 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %indvars.iv.next907 = add nuw nsw i64 %indvars.iv906, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond910.not = icmp eq i64 %indvars.iv.next907, %wide.trip.count909 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond910.not, label %for.end334.loopexit, label %for.body325 of type:br
+LV: Vector loop of width vscale x 4 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 1610612779, RTCostB: 15032385529
+Candidate VF: vscale x 4 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 1610612779, RTCostB: 3221225487
+Update Chosen Factor with Candidate VF: vscale x 4 and ChosenFactor VF: vscale x 2
+LV: Selecting VF: vscale x 4 With Cost: 0.
+maxbefore: 2
+maxafter: 2
+LEV: Epilogue vectorization is not profitable for this loop
+LEV: EpilogueVF.Width: 1
+Executing best plan with VF=vscale x 4, UF=2 at function: think at line: search.c
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body325.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %num_moves.0 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%6>
+    WIDEN-REDUCTION-PHI ir<%k.1837> = phi ir<%k.0.ph>, ir<%spec.select>
+    vp<%4> = SCALAR-STEPS vp<%3>, ir<1>
+    CLONE ir<%arrayidx327> = getelementptr inbounds ir<@rootlosers>, ir<0>, vp<%4>
+    vp<%5> = vector-pointer ir<%arrayidx327>
+    WIDEN ir<%72> = load vp<%5>
+    WIDEN ir<%tobool328.not> = icmp ne ir<%72>, ir<0>
+    WIDEN-CAST ir<%inc330> = zext  ir<%tobool328.not> to i32
+    WIDEN ir<%spec.select> = add ir<%k.1837>, ir<%inc330>
+    EMIT vp<%6> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%6>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%8> = compute-reduction-result ir<%k.1837>, ir<%spec.select>
+  EMIT vp<%9> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%9>
+Successor(s): ir-bb<for.end334.loopexit>, scalar.ph
+
+ir-bb<for.end334.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+
+Live-out i32 %spec.select.lcssa = vp<%8>
+}
+================ Final VPlan ================
+
+================================================
+Loops Vectorized: 1
+Loops Analyzed: 22
+Loops Epilogues Vectorized: 0
+================================================
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o see.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                see.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o seval.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                seval.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o sjeng.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                sjeng.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o ttable.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                ttable.c
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o utils.o -DSPEC_CPU -DNDEBUG    -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions                utils.c
+@@ Instruction =>  %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 -> Cost: 10 -> VectorType: <2 x i32> -> ttilog -> MaskedMemoryOpCost(10)
+LV: Decision: Scalarize
+@@ Instruction =>  %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 -> Cost: 20 -> VectorType: <4 x i32> -> ttilog -> MaskedMemoryOpCost(20)
+LV: Decision: Scalarize
+@@ Instruction =>  %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 -> Cost: Invalid -> VectorType: <vscale x 1 x i32> -> ttilog -> 
+@@ Instruction =>  %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 2 x i32> -> ttilog -> MaskedMemoryOpCost(1)
+@@ Instruction =>  %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 -> Cost: 1 -> VectorType: <vscale x 4 x i32> -> ttilog -> MaskedMemoryOpCost(1)
+========== Loop: reset_piece_square' from utils.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + (zext i32 (1 + %0) to i64))<nsw>
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%6>
+    WIDEN-INDUCTION %indvars.iv = phi 1, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<@is_promoted>, ir<0>, ir<%indvars.iv>
+    CLONE ir<%2> = load ir<%arrayidx>
+    CLONE ir<%tobool.not> = icmp eq ir<%2>, ir<0>
+  Successor(s): if.then
+
+  if.then:
+    EMIT vp<%4> = not ir<%tobool.not>
+    CLONE ir<%arrayidx2> = getelementptr inbounds ir<@pieces>, ir<0>, ir<%indvars.iv>
+    CLONE ir<%3> = load ir<%arrayidx2>, vp<%4>
+    CLONE ir<%idxprom3> = sext ir<%3>
+    CLONE ir<%arrayidx4> = getelementptr inbounds ir<%promoted_board>, ir<0>, ir<%idxprom3>
+    CLONE store ir<1>, ir<%arrayidx4>, vp<%4>
+  Successor(s): for.inc
+
+  for.inc:
+    EMIT vp<%5> = or ir<%tobool.not>, vp<%4>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%6> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%6>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%8> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.end.loopexit>, scalar.ph
+
+ir-bb<for.end.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: reset_piece_square' from utils.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={2,4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + (zext i32 (1 + %0) to i64))<nsw>
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%8>
+    WIDEN-INDUCTION %indvars.iv = phi 1, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<@is_promoted>, ir<0>, ir<%indvars.iv>
+    vp<%4> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%2> = load vp<%4>
+    WIDEN ir<%tobool.not> = icmp eq ir<%2>, ir<0>
+  Successor(s): if.then
+
+  if.then:
+    EMIT vp<%5> = not ir<%tobool.not>
+    CLONE ir<%arrayidx2> = getelementptr ir<@pieces>, ir<0>, ir<%indvars.iv>
+    vp<%6> = vector-pointer ir<%arrayidx2>
+    WIDEN ir<%3> = load vp<%6>, vp<%5>
+    WIDEN-CAST ir<%idxprom3> = sext  ir<%3> to i64
+    REPLICATE ir<%arrayidx4> = getelementptr inbounds ir<%promoted_board>, ir<0>, ir<%idxprom3>
+    REPLICATE store ir<1>, ir<%arrayidx4>, vp<%5>
+  Successor(s): for.inc
+
+  for.inc:
+    EMIT vp<%7> = or ir<%tobool.not>, vp<%5>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%8> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%8>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%10> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%10>
+Successor(s): ir-bb<for.end.loopexit>, scalar.ph
+
+ir-bb<for.end.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: reset_piece_square' from utils.c==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + (zext i32 (1 + %0) to i64))<nsw>
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%8>
+    WIDEN-INDUCTION %indvars.iv = phi 1, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<@is_promoted>, ir<0>, ir<%indvars.iv>
+    vp<%4> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%2> = load vp<%4>
+    WIDEN ir<%tobool.not> = icmp eq ir<%2>, ir<0>
+  Successor(s): if.then
+
+  if.then:
+    EMIT vp<%5> = not ir<%tobool.not>
+    CLONE ir<%arrayidx2> = getelementptr ir<@pieces>, ir<0>, ir<%indvars.iv>
+    vp<%6> = vector-pointer ir<%arrayidx2>
+    WIDEN ir<%3> = load vp<%6>, vp<%5>
+    WIDEN-CAST ir<%idxprom3> = sext  ir<%3> to i64
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx4> = getelementptr inbounds ir<%promoted_board>, ir<0>, ir<%idxprom3>
+    REPLICATE store ir<1>, ir<%arrayidx4>, vp<%5>
+  Successor(s): for.inc
+
+  for.inc:
+    EMIT vp<%7> = or ir<%tobool.not>, vp<%5>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%8> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%8>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%10> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%10>
+Successor(s): ir-bb<for.end.loopexit>, scalar.ph
+
+ir-bb<for.end.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: reset_piece_square' from utils.c==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body.preheader>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + (zext i32 (1 + %0) to i64))<nsw>
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%8>
+    WIDEN-INDUCTION %indvars.iv = phi 1, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<@is_promoted>, ir<0>, ir<%indvars.iv>
+    vp<%4> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%2> = load vp<%4>
+    WIDEN ir<%tobool.not> = icmp eq ir<%2>, ir<0>
+  Successor(s): if.then
+
+  if.then:
+    EMIT vp<%5> = not ir<%tobool.not>
+    CLONE ir<%arrayidx2> = getelementptr ir<@pieces>, ir<0>, ir<%indvars.iv>
+    vp<%6> = vector-pointer ir<%arrayidx2>
+    WIDEN ir<%3> = load vp<%6>, vp<%5>
+    WIDEN-CAST ir<%idxprom3> = sext  ir<%3> to i64
+    WIDEN-GEP Inv[Inv][Var] ir<%arrayidx4> = getelementptr inbounds ir<%promoted_board>, ir<0>, ir<%idxprom3>
+    WIDEN store ir<%arrayidx4>, ir<1>, vp<%5>
+  Successor(s): for.inc
+
+  for.inc:
+    EMIT vp<%7> = or ir<%tobool.not>, vp<%5>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%8> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%8>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%10> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%10>
+Successor(s): ir-bb<for.end.loopexit>, scalar.ph
+
+ir-bb<for.end.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Scalar loop costs: 7.
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 4 for VF 2 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 10 for VF 2 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 2 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Vector loop of width 2 costs: 10
+A is not scalable.	B is not scalable.	
+RTCostA: 21474836467, RTCostB: 15032385529
+A is not scalable.	B is not scalable.	
+RTCostA: 21474836467, RTCostB: 15032385529
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 8 for VF 4 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 20 for VF 4 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Found an estimated cost of 4 for VF 4 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Vector loop of width 4 costs: 9
+A is not scalable.	B is not scalable.	
+RTCostA: 20401094639, RTCostB: 15032385529
+A is not scalable.	B is not scalable.	
+RTCostA: 20401094639, RTCostB: 15032385529
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 15032385529
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 15032385529
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Vector loop of width vscale x 2 costs: 11
+A is scalable.	B is not scalable.	
+RTCostA: 24696061927, RTCostB: 15032385529
+A is scalable.	B is not scalable.	
+RTCostA: 24696061927, RTCostB: 15032385529
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next, %for.inc ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx = getelementptr inbounds [62 x i32], ptr @is_promoted, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %2 = load i32, ptr %arrayidx, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %tobool.not = icmp eq i32 %2, 0 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %tobool.not, label %for.inc, label %if.then of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx2 = getelementptr inbounds [62 x i32], ptr @pieces, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %3 = load i32, ptr %arrayidx2, align 4, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom3 = sext i32 %3 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx4 = getelementptr inbounds [144 x i32], ptr %promoted_board, i64 0, i64 %idxprom3 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i32 1, ptr %arrayidx4, align 4, !tbaa !6 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br label %for.inc of type:br
+
+-----------------Function that is being costed:'reset_piece_square' from utils.c-----------------
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.end.loopexit, label %for.body of type:br
+LV: Vector loop of width vscale x 4 costs: 11
+A is scalable.	B is not scalable.	
+RTCostA: 23622320089, RTCostB: 15032385529
+A is scalable.	B is not scalable.	
+RTCostA: 23622320089, RTCostB: 15032385529
+LV: Selecting VF: 1 With Cost: 7.
+maxbefore: 2
+maxafter: 2
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang -std=gnu89 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration     -march=armv8-a+sve -O3    -fno-slp-vectorize -fno-inline-functions          attacks.o book.o crazy.o draw.o ecache.o epd.o eval.o leval.o moves.o neval.o partner.o proof.o rcfile.o search.o see.o seval.o sjeng.o ttable.o utils.o                     -o sjeng

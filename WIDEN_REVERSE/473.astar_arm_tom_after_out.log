@@ -1,0 +1,3242 @@
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o CreateWay_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           CreateWay_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Places_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Places_.cpp
+========== Loop: _ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body124.lr.ph>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %38 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx126> = getelementptr inbounds ir<%44>, ir<%indvars.iv>
+    CLONE ir<%52> = load ir<%arrayidx126>
+    CLONE ir<%arrayidx129> = getelementptr inbounds ir<%call121>, ir<%indvars.iv>
+    CLONE store ir<%52>, ir<%arrayidx129>
+    CLONE ir<%y134> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<1>
+    CLONE ir<%53> = load ir<%y134>
+    CLONE ir<%y137> = getelementptr inbounds ir<%arrayidx129>, ir<2>
+    CLONE store ir<%53>, ir<%y137>
+    CLONE ir<%conv142> = sitofp ir<%52>
+    CLONE ir<%mul147> = fmul ir<%sub146>, ir<%conv142>
+    CLONE ir<%div> = fdiv ir<%mul147>, ir<%conv149>
+    CLONE ir<%add150> = fadd ir<%add138>, ir<%div>
+    CLONE ir<%rx> = getelementptr inbounds ir<%arrayidx129>, ir<4>
+    CLONE store ir<%add150>, ir<%rx>
+    CLONE ir<%conv159> = sitofp ir<%53>
+    CLONE ir<%mul164> = fmul ir<%sub163>, ir<%conv159>
+    CLONE ir<%div167> = fdiv ir<%mul164>, ir<%conv166>
+    CLONE ir<%add168> = fadd ir<%add155>, ir<%div167>
+    CLONE ir<%ry> = getelementptr inbounds ir<%arrayidx129>, ir<8>
+    CLONE store ir<%add168>, ir<%ry>
+    CLONE ir<%hiding174> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<4>
+    CLONE ir<%54> = load ir<%hiding174>
+    CLONE ir<%hiding177> = getelementptr inbounds ir<%arrayidx129>, ir<12>
+    CLONE store ir<%54>, ir<%hiding177>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<cleanup.sink.split.loopexit>, scalar.ph
+
+ir-bb<cleanup.sink.split.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={2,4,8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body124.lr.ph>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %38 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx126> = getelementptr inbounds ir<%44>, ir<%indvars.iv>
+    INTERLEAVE-GROUP with factor 8 at %52, ir<%arrayidx126>
+      ir<%52> = load from index 0
+      ir<%53> = load from index 1
+    REPLICATE ir<%arrayidx129> = getelementptr inbounds ir<%call121>, ir<%indvars.iv>
+    REPLICATE store ir<%52>, ir<%arrayidx129>
+    CLONE ir<%y134> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<1>
+    REPLICATE ir<%y137> = getelementptr inbounds ir<%arrayidx129>, ir<2>
+    REPLICATE store ir<%53>, ir<%y137>
+    WIDEN-CAST ir<%conv142> = sitofp  ir<%52> to float
+    WIDEN ir<%mul147> = fmul ir<%sub146>, ir<%conv142>
+    WIDEN ir<%div> = fdiv ir<%mul147>, ir<%conv149>
+    WIDEN ir<%add150> = fadd ir<%add138>, ir<%div>
+    REPLICATE ir<%rx> = getelementptr inbounds ir<%arrayidx129>, ir<4>
+    REPLICATE store ir<%add150>, ir<%rx>
+    WIDEN-CAST ir<%conv159> = sitofp  ir<%53> to float
+    WIDEN ir<%mul164> = fmul ir<%sub163>, ir<%conv159>
+    WIDEN ir<%div167> = fdiv ir<%mul164>, ir<%conv166>
+    WIDEN ir<%add168> = fadd ir<%add155>, ir<%div167>
+    REPLICATE ir<%ry> = getelementptr inbounds ir<%arrayidx129>, ir<8>
+    REPLICATE store ir<%add168>, ir<%ry>
+    CLONE ir<%hiding174> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<4>
+    INTERLEAVE-GROUP with factor 4 at %54, ir<%hiding174>
+      ir<%54> = load from index 0
+    REPLICATE ir<%hiding177> = getelementptr inbounds ir<%arrayidx129>, ir<12>
+    REPLICATE store ir<%54>, ir<%hiding177>
+    REPLICATE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+Successor(s): scalar.ph
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body124.lr.ph>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %38 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-GEP Inv[Var] ir<%arrayidx126> = getelementptr inbounds ir<%44>, ir<%indvars.iv>
+    REPLICATE ir<%52> = load ir<%arrayidx126>
+    WIDEN-GEP Inv[Var] ir<%arrayidx129> = getelementptr inbounds ir<%call121>, ir<%indvars.iv>
+    REPLICATE store ir<%52>, ir<%arrayidx129>
+    WIDEN-GEP Inv[Var][Inv] ir<%y134> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<1>
+    REPLICATE ir<%53> = load ir<%y134>
+    WIDEN-GEP Var[Inv] ir<%y137> = getelementptr inbounds ir<%arrayidx129>, ir<2>
+    REPLICATE store ir<%53>, ir<%y137>
+    WIDEN-CAST ir<%conv142> = sitofp  ir<%52> to float
+    WIDEN ir<%mul147> = fmul ir<%sub146>, ir<%conv142>
+    WIDEN ir<%div> = fdiv ir<%mul147>, ir<%conv149>
+    WIDEN ir<%add150> = fadd ir<%add138>, ir<%div>
+    WIDEN-GEP Var[Inv] ir<%rx> = getelementptr inbounds ir<%arrayidx129>, ir<4>
+    REPLICATE store ir<%add150>, ir<%rx>
+    WIDEN-CAST ir<%conv159> = sitofp  ir<%53> to float
+    WIDEN ir<%mul164> = fmul ir<%sub163>, ir<%conv159>
+    WIDEN ir<%div167> = fdiv ir<%mul164>, ir<%conv166>
+    WIDEN ir<%add168> = fadd ir<%add155>, ir<%div167>
+    WIDEN-GEP Var[Inv] ir<%ry> = getelementptr inbounds ir<%arrayidx129>, ir<8>
+    REPLICATE store ir<%add168>, ir<%ry>
+    WIDEN-GEP Inv[Var][Inv] ir<%hiding174> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<4>
+    REPLICATE ir<%54> = load ir<%hiding174>
+    WIDEN-GEP Var[Inv] ir<%hiding177> = getelementptr inbounds ir<%arrayidx129>, ir<12>
+    REPLICATE store ir<%54>, ir<%hiding177>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+Successor(s): scalar.ph
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 8==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.body124.lr.ph>:
+  EMIT vp<%2> = EXPAND SCEV (zext i32 %38 to i64)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-GEP Inv[Var] ir<%arrayidx126> = getelementptr inbounds ir<%44>, ir<%indvars.iv>
+    WIDEN ir<%52> = load ir<%arrayidx126>
+    WIDEN-GEP Inv[Var] ir<%arrayidx129> = getelementptr inbounds ir<%call121>, ir<%indvars.iv>
+    WIDEN store ir<%arrayidx129>, ir<%52>
+    WIDEN-GEP Inv[Var][Inv] ir<%y134> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<1>
+    WIDEN ir<%53> = load ir<%y134>
+    WIDEN-GEP Var[Inv] ir<%y137> = getelementptr inbounds ir<%arrayidx129>, ir<2>
+    WIDEN store ir<%y137>, ir<%53>
+    WIDEN-CAST ir<%conv142> = sitofp  ir<%52> to float
+    WIDEN ir<%mul147> = fmul ir<%sub146>, ir<%conv142>
+    WIDEN ir<%div> = fdiv ir<%mul147>, ir<%conv149>
+    WIDEN ir<%add150> = fadd ir<%add138>, ir<%div>
+    WIDEN-GEP Var[Inv] ir<%rx> = getelementptr inbounds ir<%arrayidx129>, ir<4>
+    WIDEN store ir<%rx>, ir<%add150>
+    WIDEN-CAST ir<%conv159> = sitofp  ir<%53> to float
+    WIDEN ir<%mul164> = fmul ir<%sub163>, ir<%conv159>
+    WIDEN ir<%div167> = fdiv ir<%mul164>, ir<%conv166>
+    WIDEN ir<%add168> = fadd ir<%add155>, ir<%div167>
+    WIDEN-GEP Var[Inv] ir<%ry> = getelementptr inbounds ir<%arrayidx129>, ir<8>
+    WIDEN store ir<%ry>, ir<%add168>
+    WIDEN-GEP Inv[Var][Inv] ir<%hiding174> = getelementptr inbounds ir<%44>, ir<%indvars.iv>, ir<4>
+    WIDEN ir<%54> = load ir<%hiding174>
+    WIDEN-GEP Var[Inv] ir<%hiding177> = getelementptr inbounds ir<%arrayidx129>, ir<12>
+    WIDEN store ir<%hiding177>, ir<%54>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<%wide.trip.count>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+Successor(s): scalar.ph
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %y134 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 1 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %rx = getelementptr inbounds i8, ptr %arrayidx129, i64 4 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %ry = getelementptr inbounds i8, ptr %arrayidx129, i64 8 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Scalar loop costs: 30.
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 18 for VF 2 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 2 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: Interleave
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 24 for VF 2 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 3 for VF 2 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 2 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 2 for VF 2 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 2 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 3 for VF 2 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 2 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 2 for VF 2 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 2 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 4 for VF 2 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width 2 costs: 47
+A is not scalable.	B is not scalable.	
+RTCostA: 100931731392, RTCostB: 64424509410
+A is not scalable.	B is not scalable.	
+RTCostA: 100931731392, RTCostB: 64424509410
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 36 for VF 4 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 4 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: Interleave
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 48 for VF 4 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 4 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 4 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 4 for VF 4 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 66 for VF 4 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width 4 costs: 42
+A is not scalable.	B is not scalable.	
+RTCostA: 91268054960, RTCostB: 64424509410
+A is not scalable.	B is not scalable.	
+RTCostA: 91268054960, RTCostB: 64424509410
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 72 for VF 8 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 8 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: Interleave
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 96 for VF 8 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 8 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF 8 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: Interleave
+LV: Found an estimated cost of 8 for VF 8 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 132 for VF 8 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width 8 costs: 42
+A is not scalable.	B is not scalable.	
+RTCostA: 90731184000, RTCostB: 64424509410
+A is not scalable.	B is not scalable.	
+RTCostA: 90731184000, RTCostB: 64424509410
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: Scalarize
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 64424509410
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 64424509410
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 82 for VF vscale x 2 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 82 for VF vscale x 2 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF vscale x 2 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 2 for VF vscale x 2 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF vscale x 2 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 2 for VF vscale x 2 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 123 for VF vscale x 2 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width vscale x 2 costs: 85
+A is scalable.	B is not scalable.	
+RTCostA: 183609851652, RTCostB: 64424509410
+A is scalable.	B is not scalable.	
+RTCostA: 183609851652, RTCostB: 64424509410
+
+-----------------Function that is being costed:'_ZN6wayobj14findfreepointsE8rvectortiRi' from Places_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.body124.lr.ph ], [ %indvars.iv.next, %for.body124 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx126 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 162 for VF vscale x 4 For instruction:   %52 = load i16, ptr %arrayidx126, align 4, !tbaa !28 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx129 = getelementptr inbounds %struct.levelplacet, ptr %call121, i64 %indvars.iv of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   store i16 %52, ptr %arrayidx129, align 4, !tbaa !28 of type:store
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %53 = load i16, ptr %y134, align 2, !tbaa !30 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %y137 = getelementptr inbounds i8, ptr %arrayidx129, i64 2 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 162 for VF vscale x 4 For instruction:   store i16 %53, ptr %y137, align 2, !tbaa !30 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %conv142 = sitofp i16 %52 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %mul147 = fmul float %sub146, %conv142 of type:fmul
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %div = fdiv float %mul147, %conv149 of type:fdiv
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %add150 = fadd float %add138, %div of type:fadd
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   store float %add150, ptr %rx, align 4, !tbaa !43 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %conv159 = sitofp i16 %53 to float of type:sitofp
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %mul164 = fmul float %sub163, %conv159 of type:fmul
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %div167 = fdiv float %mul164, %conv166 of type:fdiv
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %add168 = fadd float %add155, %div167 of type:fadd
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   store float %add168, ptr %ry, align 4, !tbaa !44 of type:store
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %hiding174 = getelementptr inbounds %struct.levelplacet, ptr %44, i64 %indvars.iv, i32 4 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %54 = load float, ptr %hiding174, align 4, !tbaa !31 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %hiding177 = getelementptr inbounds i8, ptr %arrayidx129, i64 12 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 243 for VF vscale x 4 For instruction:   store float %54, ptr %hiding177, align 4, !tbaa !31 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, %wide.trip.count of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %cleanup.sink.split.loopexit, label %for.body124 of type:br
+LV: Vector loop of width vscale x 4 costs: 82
+A is scalable.	B is not scalable.	
+RTCostA: 177972706875, RTCostB: 64424509410
+A is scalable.	B is not scalable.	
+RTCostA: 177972706875, RTCostB: 64424509410
+LV: Selecting VF: 1 With Cost: 30.
+maxbefore: 2
+maxafter: 2
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o RegBounds_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           RegBounds_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o RegMng_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           RegMng_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Way2_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Way2_.cpp
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 -> Cost: 1 -> VectorType: <vscale x 16 x i8> -> ttilog -> MemoryOpCost(1)
+========== Loop: _ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%movetimearp>, ir<%indvars.iv>
+    CLONE ir<%0> = load ir<%arrayidx>
+    CLONE ir<%arrayidx7> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    CLONE store ir<%0>, ir<%arrayidx7>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end>, scalar.ph
+
+ir-bb<for.end>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 32==========
+VPlan 'Initial VPlan for VF={2,4,8,16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%movetimearp>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%0> = load vp<%3>
+    CLONE ir<%arrayidx7> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    vp<%4> = vector-pointer ir<%arrayidx7>
+    WIDEN store vp<%4>, ir<%0>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end>, scalar.ph
+
+ir-bb<for.end>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 32==========
+VPlan 'Initial VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%movetimearp>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%0> = load vp<%3>
+    CLONE ir<%arrayidx7> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    vp<%4> = vector-pointer ir<%arrayidx7>
+    WIDEN store vp<%4>, ir<%0>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end>, scalar.ph
+
+ir-bb<for.end>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Scalar loop costs: 6.
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width 2 costs: 5
+A is not scalable.	B is not scalable.	
+RTCostA: 1280, RTCostB: 1536
+Candidate VF: 2 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 1280, RTCostB: 1536
+Update Chosen Factor with Candidate VF: 2 and ChosenFactor VF: 1
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width 4 costs: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 384, RTCostB: 1536
+Candidate VF: 4 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 384, RTCostB: 1280
+Update Chosen Factor with Candidate VF: 4 and ChosenFactor VF: 2
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width 8 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 1536
+Candidate VF: 8 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 384
+Update Chosen Factor with Candidate VF: 8 and ChosenFactor VF: 4
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 16 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width 16 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 1536
+Candidate VF: 16 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 128
+Update Chosen Factor with Candidate VF: 16 and ChosenFactor VF: 8
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 1536
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 64
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width vscale x 2 costs: 1
+A is scalable.	B is not scalable.	
+RTCostA: 256, RTCostB: 1536
+Candidate VF: vscale x 2 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 256, RTCostB: 64
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width vscale x 4 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 1536
+Candidate VF: vscale x 4 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 64
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width vscale x 8 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 1536
+Candidate VF: vscale x 8 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 64
+Update Chosen Factor with Candidate VF: vscale x 8 and ChosenFactor VF: 16
+
+-----------------Function that is being costed:'_ZN7way2obj9createwayEiiiiPhRP6pointtRi' from Way2_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %indvars.iv = phi i64 [ 0, %entry ], [ %indvars.iv.next, %for.body ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %arrayidx = getelementptr inbounds i8, ptr %movetimearp, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   %0 = load i8, ptr %arrayidx, align 1, !tbaa !17 of type:load
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %arrayidx7 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   store i8 %0, ptr %arrayidx7, align 1, !tbaa !17 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   br i1 %exitcond.not, label %for.end, label %for.body of type:br
+LV: Vector loop of width vscale x 16 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 32, RTCostB: 1536
+Candidate VF: vscale x 16 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 32, RTCostB: 64
+Update Chosen Factor with Candidate VF: vscale x 16 and ChosenFactor VF: vscale x 8
+LV: Selecting VF: vscale x 16 With Cost: 0.
+maxbefore: 2
+maxafter: 2
+A is not scalable.	B is not scalable.	
+RTCostA: 384, RTCostB: 1280
+A is not scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 384
+A is not scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 128
+A is scalable.	B is not scalable.	
+RTCostA: 256, RTCostB: 64
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 64
+A is scalable.	B is not scalable.	
+RTCostA: 64, RTCostB: 64
+LEV: Vectorizing epilogue loop with VF = vscale x 8 at function: _ZN7way2obj9createwayEiiiiPhRP6pointtRi at line: Way2_.cpp
+LEV: EpilogueVF.Width: vscale x 8
+Executing best plan with VF=vscale x 16, UF=2 at function: _ZN7way2obj9createwayEiiiiPhRP6pointtRi at line: Way2_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%6>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%movetimearp>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%5> = load vp<%4>
+    CLONE ir<%arrayidx7> = getelementptr inbounds ir<%movetimear>, ir<0>, vp<%3>
+    vp<%5> = vector-pointer ir<%arrayidx7>
+    WIDEN store vp<%5>, ir<%5>
+    EMIT vp<%6> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%6>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%8> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.end>, scalar.ph
+
+ir-bb<for.end>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+Executing best plan with VF=vscale x 8, UF=1 at function: _ZN7way2obj9createwayEiiiiPhRP6pointtRi at line: Way2_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vec.epilog.vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%6>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%movetimearp>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx>
+    WIDEN ir<%32> = load vp<%4>
+    CLONE ir<%arrayidx7> = getelementptr inbounds ir<%movetimear>, ir<0>, vp<%3>
+    vp<%5> = vector-pointer ir<%arrayidx7>
+    WIDEN store vp<%5>, ir<%32>
+    EMIT vp<%6> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%6>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%8> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.end>, scalar.ph
+
+ir-bb<for.end>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+================================================
+Loops Vectorized: 1
+Loops Analyzed: 8
+Loops Epilogues Vectorized: 1
+================================================
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o WayInit_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           WayInit_.cpp
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.058 = phi 0, %inc, ir<1>
+    CLONE ir<%shl6> = shl ir<%y.058>, ir<%6>
+    CLONE ir<%idxprom> = sext ir<%shl6>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%5>, ir<%idxprom>
+    CLONE store ir<-1>, ir<%arrayidx>
+    CLONE ir<%inc> = add nuw nsw ir<%y.058>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond7.preheader>, scalar.ph
+
+ir-bb<for.cond7.preheader>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={2,4,8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.058 = phi 0, %inc, ir<1>
+    WIDEN ir<%shl6> = shl ir<%y.058>, ir<%6>
+    WIDEN-CAST ir<%idxprom> = sext  ir<%shl6> to i64
+    REPLICATE ir<%arrayidx> = getelementptr inbounds ir<%5>, ir<%idxprom>
+    REPLICATE store ir<-1>, ir<%arrayidx>
+    WIDEN ir<%inc> = add nuw nsw ir<%y.058>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond7.preheader>, scalar.ph
+
+ir-bb<for.cond7.preheader>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.058 = phi 0, %inc, ir<1>
+    WIDEN ir<%shl6> = shl ir<%y.058>, ir<%6>
+    WIDEN-CAST ir<%idxprom> = sext  ir<%shl6> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx> = getelementptr inbounds ir<%5>, ir<%idxprom>
+    REPLICATE store ir<-1>, ir<%arrayidx>
+    WIDEN ir<%inc> = add nuw nsw ir<%y.058>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond7.preheader>, scalar.ph
+
+ir-bb<for.cond7.preheader>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4,vscale x 8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.058 = phi 0, %inc, ir<1>
+    WIDEN ir<%shl6> = shl ir<%y.058>, ir<%6>
+    WIDEN-CAST ir<%idxprom> = sext  ir<%shl6> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx> = getelementptr inbounds ir<%5>, ir<%idxprom>
+    WIDEN store ir<%arrayidx>, ir<-1>
+    WIDEN ir<%inc> = add nuw nsw ir<%y.058>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond7.preheader>, scalar.ph
+
+ir-bb<for.cond7.preheader>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Scalar loop costs: 5.
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 26 for VF 2 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width 2 costs: 14
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512872, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512872, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 52 for VF 4 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width 4 costs: 14
+A is not scalable.	B is not scalable.	
+RTCostA: 30601641942, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 30601641942, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 104 for VF 8 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width 8 costs: 13
+A is not scalable.	B is not scalable.	
+RTCostA: 29259464630, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 29259464630, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width vscale x 2 costs: 11
+A is scalable.	B is not scalable.	
+RTCostA: 23622320099, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 23622320099, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width vscale x 4 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 23085449165, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 23085449165, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %y.058 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ] of type:phi
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %shl6 = shl i32 %y.058, %6 of type:shl
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %idxprom = sext i32 %shl6 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx = getelementptr inbounds i16, ptr %5, i64 %idxprom of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 161 for VF vscale x 8 For instruction:   store i16 -1, ptr %arrayidx, align 2, !tbaa !24 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %inc = add nuw nsw i32 %y.058, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond.not = icmp eq i32 %inc, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond.not, label %for.cond7.preheader, label %for.body of type:br
+LV: Vector loop of width vscale x 8 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 22280142757, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 22280142757, RTCostB: 10737418235
+LV: Selecting VF: 1 With Cost: 5.
+maxbefore: 2
+maxafter: 2
+Executing best plan with VF=1, UF=2 at function: _ZN6wayobj5clearEv at line: WayInit_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%shl6> = shl vp<%3>, ir<%6>
+    CLONE ir<%idxprom> = sext ir<%shl6>
+    CLONE ir<%arrayidx> = getelementptr inbounds ir<%5>, ir<%idxprom>
+    CLONE store ir<-1>, ir<%arrayidx>
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond7.preheader>, scalar.ph
+
+ir-bb<for.cond7.preheader>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.160 = phi 0, %inc18, ir<1>
+    CLONE ir<%shl13> = shl ir<%y.160>, ir<%17>
+    CLONE ir<%or14> = or ir<%shl13>, ir<%18>
+    CLONE ir<%idxprom15> = sext ir<%or14>
+    CLONE ir<%arrayidx16> = getelementptr inbounds ir<%16>, ir<%idxprom15>
+    CLONE store ir<-1>, ir<%arrayidx16>
+    CLONE ir<%inc18> = add nuw nsw ir<%y.160>, ir<1>
+    CLONE ir<%exitcond66.not> = icmp eq ir<%inc18>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond20.preheader.loopexit>, scalar.ph
+
+ir-bb<for.cond20.preheader.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={2,4,8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.160 = phi 0, %inc18, ir<1>
+    WIDEN ir<%shl13> = shl ir<%y.160>, ir<%17>
+    WIDEN ir<%or14> = or ir<%shl13>, ir<%18>
+    WIDEN-CAST ir<%idxprom15> = sext  ir<%or14> to i64
+    REPLICATE ir<%arrayidx16> = getelementptr inbounds ir<%16>, ir<%idxprom15>
+    REPLICATE store ir<-1>, ir<%arrayidx16>
+    WIDEN ir<%inc18> = add nuw nsw ir<%y.160>, ir<1>
+    CLONE ir<%exitcond66.not> = icmp eq ir<%inc18>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond20.preheader.loopexit>, scalar.ph
+
+ir-bb<for.cond20.preheader.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.160 = phi 0, %inc18, ir<1>
+    WIDEN ir<%shl13> = shl ir<%y.160>, ir<%17>
+    WIDEN ir<%or14> = or ir<%shl13>, ir<%18>
+    WIDEN-CAST ir<%idxprom15> = sext  ir<%or14> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx16> = getelementptr inbounds ir<%16>, ir<%idxprom15>
+    REPLICATE store ir<-1>, ir<%arrayidx16>
+    WIDEN ir<%inc18> = add nuw nsw ir<%y.160>, ir<1>
+    CLONE ir<%exitcond66.not> = icmp eq ir<%inc18>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond20.preheader.loopexit>, scalar.ph
+
+ir-bb<for.cond20.preheader.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4,vscale x 8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %y.160 = phi 0, %inc18, ir<1>
+    WIDEN ir<%shl13> = shl ir<%y.160>, ir<%17>
+    WIDEN ir<%or14> = or ir<%shl13>, ir<%18>
+    WIDEN-CAST ir<%idxprom15> = sext  ir<%or14> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx16> = getelementptr inbounds ir<%16>, ir<%idxprom15>
+    WIDEN store ir<%arrayidx16>, ir<-1>
+    WIDEN ir<%inc18> = add nuw nsw ir<%y.160>, ir<1>
+    CLONE ir<%exitcond66.not> = icmp eq ir<%inc18>, ir<%4>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.cond20.preheader.loopexit>, scalar.ph
+
+ir-bb<for.cond20.preheader.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Scalar loop costs: 6.
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 26 for VF 2 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width 2 costs: 15
+A is not scalable.	B is not scalable.	
+RTCostA: 32212254696, RTCostB: 12884901882
+A is not scalable.	B is not scalable.	
+RTCostA: 32212254696, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 52 for VF 4 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width 4 costs: 14
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512856, RTCostB: 12884901882
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512856, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 104 for VF 8 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width 8 costs: 13
+A is not scalable.	B is not scalable.	
+RTCostA: 29796335547, RTCostB: 12884901882
+A is not scalable.	B is not scalable.	
+RTCostA: 29796335547, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 12884901882
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width vscale x 2 costs: 11
+A is scalable.	B is not scalable.	
+RTCostA: 24159191013, RTCostB: 12884901882
+A is scalable.	B is not scalable.	
+RTCostA: 24159191013, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width vscale x 4 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 23353884627, RTCostB: 12884901882
+A is scalable.	B is not scalable.	
+RTCostA: 23353884627, RTCostB: 12884901882
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %y.160 = phi i32 [ 0, %for.body10.lr.ph ], [ %inc18, %for.body10 ] of type:phi
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %shl13 = shl i32 %y.160, %17 of type:shl
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %or14 = or i32 %shl13, %18 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %idxprom15 = sext i32 %or14 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx16 = getelementptr inbounds i16, ptr %16, i64 %idxprom15 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 161 for VF vscale x 8 For instruction:   store i16 -1, ptr %arrayidx16, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %inc18 = add nuw nsw i32 %y.160, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond66.not = icmp eq i32 %inc18, %4 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond66.not, label %for.cond20.preheader.loopexit, label %for.body10 of type:br
+LV: Vector loop of width vscale x 8 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 22548578226, RTCostB: 12884901882
+A is scalable.	B is not scalable.	
+RTCostA: 22548578226, RTCostB: 12884901882
+LV: Selecting VF: 1 With Cost: 6.
+maxbefore: 2
+maxafter: 2
+Executing best plan with VF=1, UF=2 at function: _ZN6wayobj5clearEv at line: WayInit_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%4> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%shl13> = shl vp<%3>, ir<%17>
+    CLONE ir<%or14> = or ir<%shl13>, ir<%18>
+    CLONE ir<%idxprom15> = sext ir<%or14>
+    CLONE ir<%arrayidx16> = getelementptr inbounds ir<%16>, ir<%idxprom15>
+    CLONE store ir<-1>, ir<%arrayidx16>
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<%4>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond20.preheader.loopexit>, scalar.ph
+
+ir-bb<for.cond20.preheader.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%30> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %x.165 = phi 0, %inc43, ir<1>
+    CLONE ir<%or39> = or ir<%shl38>, ir<%x.165>
+    CLONE ir<%idxprom40> = sext ir<%or39>
+    CLONE ir<%arrayidx41> = getelementptr inbounds ir<%31>, ir<%idxprom40>
+    CLONE store ir<-1>, ir<%arrayidx41>
+    CLONE ir<%inc43> = add nuw nsw ir<%x.165>, ir<1>
+    CLONE ir<%exitcond68.not> = icmp eq ir<%inc43>, ir<%30>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%30>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end44.loopexit>, scalar.ph
+
+ir-bb<for.end44.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={2,4,8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%30> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %x.165 = phi 0, %inc43, ir<1>
+    WIDEN ir<%or39> = or ir<%shl38>, ir<%x.165>
+    WIDEN-CAST ir<%idxprom40> = sext  ir<%or39> to i64
+    REPLICATE ir<%arrayidx41> = getelementptr inbounds ir<%31>, ir<%idxprom40>
+    REPLICATE store ir<-1>, ir<%arrayidx41>
+    WIDEN ir<%inc43> = add nuw nsw ir<%x.165>, ir<1>
+    CLONE ir<%exitcond68.not> = icmp eq ir<%inc43>, ir<%30>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%30>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end44.loopexit>, scalar.ph
+
+ir-bb<for.end44.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%30> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %x.165 = phi 0, %inc43, ir<1>
+    WIDEN ir<%or39> = or ir<%shl38>, ir<%x.165>
+    WIDEN-CAST ir<%idxprom40> = sext  ir<%or39> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx41> = getelementptr inbounds ir<%31>, ir<%idxprom40>
+    REPLICATE store ir<-1>, ir<%arrayidx41>
+    WIDEN ir<%inc43> = add nuw nsw ir<%x.165>, ir<1>
+    CLONE ir<%exitcond68.not> = icmp eq ir<%inc43>, ir<%30>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%30>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end44.loopexit>, scalar.ph
+
+ir-bb<for.end44.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj5clearEv' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4,vscale x 8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%30> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %x.165 = phi 0, %inc43, ir<1>
+    WIDEN ir<%or39> = or ir<%shl38>, ir<%x.165>
+    WIDEN-CAST ir<%idxprom40> = sext  ir<%or39> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx41> = getelementptr inbounds ir<%31>, ir<%idxprom40>
+    WIDEN store ir<%arrayidx41>, ir<-1>
+    WIDEN ir<%inc43> = add nuw nsw ir<%x.165>, ir<1>
+    CLONE ir<%exitcond68.not> = icmp eq ir<%inc43>, ir<%30>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<%30>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end44.loopexit>, scalar.ph
+
+ir-bb<for.end44.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Scalar loop costs: 5.
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 26 for VF 2 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width 2 costs: 14
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512872, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 31138512872, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 52 for VF 4 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width 4 costs: 14
+A is not scalable.	B is not scalable.	
+RTCostA: 30601641942, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 30601641942, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 104 for VF 8 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width 8 costs: 13
+A is not scalable.	B is not scalable.	
+RTCostA: 29259464630, RTCostB: 10737418235
+A is not scalable.	B is not scalable.	
+RTCostA: 29259464630, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width vscale x 2 costs: 11
+A is scalable.	B is not scalable.	
+RTCostA: 23622320099, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 23622320099, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width vscale x 4 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 23085449165, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 23085449165, RTCostB: 10737418235
+
+-----------------Function that is being costed:'_ZN6wayobj5clearEv' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %x.165 = phi i32 [ 0, %for.body35.lr.ph ], [ %inc43, %for.body35 ] of type:phi
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %or39 = or i32 %shl38, %x.165 of type:or
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %idxprom40 = sext i32 %or39 to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx41 = getelementptr inbounds i16, ptr %31, i64 %idxprom40 of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 161 for VF vscale x 8 For instruction:   store i16 -1, ptr %arrayidx41, align 2, !tbaa !23 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %inc43 = add nuw nsw i32 %x.165, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond68.not = icmp eq i32 %inc43, %30 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond68.not, label %for.end44.loopexit, label %for.body35 of type:br
+LV: Vector loop of width vscale x 8 costs: 10
+A is scalable.	B is not scalable.	
+RTCostA: 22280142757, RTCostB: 10737418235
+A is scalable.	B is not scalable.	
+RTCostA: 22280142757, RTCostB: 10737418235
+LV: Selecting VF: 1 With Cost: 5.
+maxbefore: 2
+maxafter: 2
+Executing best plan with VF=1, UF=2 at function: _ZN6wayobj5clearEv at line: WayInit_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<%30> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%or39> = or ir<%shl38>, vp<%3>
+    CLONE ir<%idxprom40> = sext ir<%or39>
+    CLONE ir<%arrayidx41> = getelementptr inbounds ir<%31>, ir<%idxprom40>
+    CLONE store ir<-1>, ir<%arrayidx41>
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<%30>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.end44.loopexit>, scalar.ph
+
+ir-bb<for.end44.loopexit>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+================================================
+Loops Vectorized: 0
+Loops Analyzed: 5
+Loops Epilogues Vectorized: 0
+================================================
+========== Loop: _ZN6wayobj7loadmapEPKc' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.cond27.preheader.us>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + %3)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %x.071.us = phi 1, %inc.us, ir<1>
+    CLONE ir<%or.us> = or ir<%shl.us>, ir<%x.071.us>
+    CLONE ir<%idxprom.us> = sext ir<%or.us>
+    CLONE ir<%arrayidx.us> = getelementptr inbounds ir<%call21>, ir<%idxprom.us>
+    CLONE ir<%6> = load ir<%arrayidx.us>
+    CLONE ir<%conv30.us> = zext ir<%6>
+    CLONE ir<%arrayidx35.us> = getelementptr inbounds ir<%5>, ir<%idxprom.us>
+    CLONE store ir<%conv30.us>, ir<%arrayidx35.us>
+    CLONE ir<%inc.us> = add nuw nsw ir<%x.071.us>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc.us>, ir<%3>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond27.for.inc36_crit_edge.us>, scalar.ph
+
+ir-bb<for.cond27.for.inc36_crit_edge.us>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj7loadmapEPKc' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 32==========
+VPlan 'Initial VPlan for VF={2,4,8,16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.cond27.preheader.us>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + %3)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %x.071.us = phi 1, %inc.us, ir<1>
+    WIDEN ir<%or.us> = or ir<%shl.us>, ir<%x.071.us>
+    WIDEN-CAST ir<%idxprom.us> = sext  ir<%or.us> to i64
+    REPLICATE ir<%arrayidx.us> = getelementptr inbounds ir<%call21>, ir<%idxprom.us>
+    REPLICATE ir<%6> = load ir<%arrayidx.us>
+    WIDEN-CAST ir<%conv30.us> = zext  ir<%6> to i16
+    REPLICATE ir<%arrayidx35.us> = getelementptr inbounds ir<%5>, ir<%idxprom.us>
+    REPLICATE store ir<%conv30.us>, ir<%arrayidx35.us>
+    WIDEN ir<%inc.us> = add nuw nsw ir<%x.071.us>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc.us>, ir<%3>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond27.for.inc36_crit_edge.us>, scalar.ph
+
+ir-bb<for.cond27.for.inc36_crit_edge.us>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj7loadmapEPKc' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={vscale x 1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.cond27.preheader.us>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + %3)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %x.071.us = phi 1, %inc.us, ir<1>
+    WIDEN ir<%or.us> = or ir<%shl.us>, ir<%x.071.us>
+    WIDEN-CAST ir<%idxprom.us> = sext  ir<%or.us> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx.us> = getelementptr inbounds ir<%call21>, ir<%idxprom.us>
+    REPLICATE ir<%6> = load ir<%arrayidx.us>
+    WIDEN-CAST ir<%conv30.us> = zext  ir<%6> to i16
+    WIDEN-GEP Inv[Var] ir<%arrayidx35.us> = getelementptr inbounds ir<%5>, ir<%idxprom.us>
+    REPLICATE store ir<%conv30.us>, ir<%arrayidx35.us>
+    WIDEN ir<%inc.us> = add nuw nsw ir<%x.071.us>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc.us>, ir<%3>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond27.for.inc36_crit_edge.us>, scalar.ph
+
+ir-bb<for.cond27.for.inc36_crit_edge.us>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: _ZN6wayobj7loadmapEPKc' from WayInit_.cpp==========
+========== VPlan for Vector Factor Range: 2 to 16==========
+VPlan 'Initial VPlan for VF={vscale x 2,vscale x 4,vscale x 8},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.cond27.preheader.us>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + %3)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %x.071.us = phi 1, %inc.us, ir<1>
+    WIDEN ir<%or.us> = or ir<%shl.us>, ir<%x.071.us>
+    WIDEN-CAST ir<%idxprom.us> = sext  ir<%or.us> to i64
+    WIDEN-GEP Inv[Var] ir<%arrayidx.us> = getelementptr inbounds ir<%call21>, ir<%idxprom.us>
+    WIDEN ir<%6> = load ir<%arrayidx.us>
+    WIDEN-CAST ir<%conv30.us> = zext  ir<%6> to i16
+    WIDEN-GEP Inv[Var] ir<%arrayidx35.us> = getelementptr inbounds ir<%5>, ir<%idxprom.us>
+    WIDEN store ir<%arrayidx35.us>, ir<%conv30.us>
+    WIDEN ir<%inc.us> = add nuw nsw ir<%x.071.us>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%inc.us>, ir<%3>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.cond27.for.inc36_crit_edge.us>, scalar.ph
+
+ir-bb<for.cond27.for.inc36_crit_edge.us>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Scalar loop costs: 8.
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 30 for VF 2 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width 2 costs: 32
+A is not scalable.	B is not scalable.	
+RTCostA: 69793218495, RTCostB: 17179869168
+A is not scalable.	B is not scalable.	
+RTCostA: 69793218495, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 60 for VF 4 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width 4 costs: 31
+A is not scalable.	B is not scalable.	
+RTCostA: 67645734802, RTCostB: 17179869168
+A is not scalable.	B is not scalable.	
+RTCostA: 67645734802, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 120 for VF 8 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 2 for VF 8 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width 8 costs: 31
+A is not scalable.	B is not scalable.	
+RTCostA: 67108863798, RTCostB: 17179869168
+A is not scalable.	B is not scalable.	
+RTCostA: 67108863798, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 8 for VF 16 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 2 for VF 16 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of 240 for VF 16 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 4 for VF 16 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF 16 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width 16 costs: 31
+A is not scalable.	B is not scalable.	
+RTCostA: 66974645885, RTCostB: 17179869168
+A is not scalable.	B is not scalable.	
+RTCostA: 66974645885, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: Scalarize
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 17179869168
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 41 for VF vscale x 2 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width vscale x 2 costs: 21
+A is scalable.	B is not scalable.	
+RTCostA: 46707769273, RTCostB: 17179869168
+A is scalable.	B is not scalable.	
+RTCostA: 46707769273, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 81 for VF vscale x 4 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width vscale x 4 costs: 21
+A is scalable.	B is not scalable.	
+RTCostA: 45097156488, RTCostB: 17179869168
+A is scalable.	B is not scalable.	
+RTCostA: 45097156488, RTCostB: 17179869168
+
+-----------------Function that is being costed:'_ZN6wayobj7loadmapEPKc' from WayInit_.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %x.071.us = phi i32 [ 1, %for.cond27.preheader.us ], [ %inc.us, %for.body29.us ] of type:phi
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %or.us = or i32 %shl.us, %x.071.us of type:or
+LV: Found an estimated cost of 4 for VF vscale x 8 For instruction:   %idxprom.us = sext i32 %or.us to i64 of type:sext
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx.us = getelementptr inbounds i8, ptr %call21, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 161 for VF vscale x 8 For instruction:   %6 = load i8, ptr %arrayidx.us, align 1, !tbaa !6 of type:load
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %conv30.us = zext i8 %6 to i16 of type:zext
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx35.us = getelementptr inbounds i16, ptr %5, i64 %idxprom.us of type:getelementptr
+LV: Decision: GatherScatter
+LV: Found an estimated cost of 161 for VF vscale x 8 For instruction:   store i16 %conv30.us, ptr %arrayidx35.us, align 2, !tbaa !22 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 8 For instruction:   %inc.us = add nuw nsw i32 %x.071.us, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond.not = icmp eq i32 %inc.us, %3 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond.not, label %for.cond27.for.inc36_crit_edge.us, label %for.body29.us of type:br
+LV: Vector loop of width vscale x 8 costs: 20
+A is scalable.	B is not scalable.	
+RTCostA: 44560285476, RTCostB: 17179869168
+A is scalable.	B is not scalable.	
+RTCostA: 44560285476, RTCostB: 17179869168
+LV: Selecting VF: 1 With Cost: 8.
+maxbefore: 2
+maxafter: 2
+Executing best plan with VF=1, UF=2 at function: _ZN6wayobj7loadmapEPKc at line: WayInit_.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+vp<%2> = original trip-count
+
+ir-bb<for.cond27.preheader.us>:
+  EMIT vp<%2> = EXPAND SCEV (-1 + %3)
+No successors
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%3> = CANONICAL-INDUCTION ir<0>, vp<%6>
+    vp<%4>    = DERIVED-IV ir<1> + vp<%3> * ir<1>
+    vp<%5> = SCALAR-STEPS vp<%4>, ir<1>
+    CLONE ir<%or.us> = or ir<%shl.us>, vp<%5>
+    CLONE ir<%idxprom.us> = sext ir<%or.us>
+    CLONE ir<%arrayidx.us> = getelementptr inbounds ir<%call21>, ir<%idxprom.us>
+    CLONE ir<%6> = load ir<%arrayidx.us>
+    CLONE ir<%conv30.us> = zext ir<%6>
+    CLONE ir<%arrayidx35.us> = getelementptr inbounds ir<%5>, ir<%idxprom.us>
+    CLONE store ir<%conv30.us>, ir<%arrayidx35.us>
+    EMIT vp<%6> = add nuw vp<%3>, vp<%0>
+    EMIT branch-on-count vp<%6>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%8> = icmp eq vp<%2>, vp<%1>
+  EMIT branch-on-cond vp<%8>
+Successor(s): ir-bb<for.cond27.for.inc36_crit_edge.us>, scalar.ph
+
+ir-bb<for.cond27.for.inc36_crit_edge.us>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+================================================
+Loops Vectorized: 0
+Loops Analyzed: 6
+Loops Epilogues Vectorized: 0
+================================================
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Library.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Library.cpp
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 16 x i8> -> ttilog -> MemoryOpCost(1)
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%conv112>, ir<1>
+    CLONE ir<%arrayidx113> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    CLONE store ir<%conv112>, ir<%arrayidx113>
+    CLONE ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end116>, scalar.ph
+
+ir-bb<for.end116>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 2 to 32==========
+VPlan 'Initial VPlan for VF={2,4,8,16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%conv112>, ir<1>
+    CLONE ir<%arrayidx113> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx113>
+    WIDEN store vp<%3>, ir<%conv112>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.end116>, scalar.ph
+
+ir-bb<for.end116>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 1 to 32==========
+VPlan 'Initial VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv = phi 0, %indvars.iv.next, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%conv112>, ir<1>
+    CLONE ir<%arrayidx113> = getelementptr inbounds ir<%movetimear>, ir<0>, ir<%indvars.iv>
+    vp<%3> = vector-pointer ir<%arrayidx113>
+    WIDEN store vp<%3>, ir<%conv112>
+    WIDEN ir<%indvars.iv.next> = add nuw nsw ir<%indvars.iv>, ir<1>
+    CLONE ir<%exitcond.not> = icmp eq ir<%indvars.iv.next>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.end116>, scalar.ph
+
+ir-bb<for.end116>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Scalar loop costs: 4.
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width 2 costs: 3
+A is not scalable.	B is not scalable.	
+RTCostA: 768, RTCostB: 1024
+Candidate VF: 2 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 768, RTCostB: 1024
+Update Chosen Factor with Candidate VF: 2 and ChosenFactor VF: 1
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width 4 costs: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 1024
+Candidate VF: 4 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 768
+Update Chosen Factor with Candidate VF: 4 and ChosenFactor VF: 2
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width 8 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 1024
+Candidate VF: 8 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 320
+Update Chosen Factor with Candidate VF: 8 and ChosenFactor VF: 4
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 8 for VF 16 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 16 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width 16 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 1024
+Candidate VF: 16 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 192
+Update Chosen Factor with Candidate VF: 16 and ChosenFactor VF: 8
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 1024
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 160
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width vscale x 2 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 1024
+Candidate VF: vscale x 2 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 160
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width vscale x 4 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 1024
+Candidate VF: vscale x 4 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 160
+Update Chosen Factor with Candidate VF: vscale x 4 and ChosenFactor VF: 16
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 4 for VF vscale x 8 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width vscale x 8 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 96, RTCostB: 1024
+Candidate VF: vscale x 8 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 96, RTCostB: 128
+Update Chosen Factor with Candidate VF: vscale x 8 and ChosenFactor VF: vscale x 4
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %indvars.iv = phi i64 [ 0, %for.body101 ], [ %indvars.iv.next, %for.body111 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %conv112 = trunc i64 %indvars.iv to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %arrayidx113 = getelementptr inbounds [256 x i8], ptr %movetimear, i64 0, i64 %indvars.iv of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   store i8 %conv112, ptr %arrayidx113, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 8 for VF vscale x 16 For instruction:   %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   %exitcond.not = icmp eq i64 %indvars.iv.next, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   br i1 %exitcond.not, label %for.end116, label %for.body111 of type:br
+LV: Vector loop of width vscale x 16 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 80, RTCostB: 1024
+Candidate VF: vscale x 16 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 80, RTCostB: 96
+Update Chosen Factor with Candidate VF: vscale x 16 and ChosenFactor VF: vscale x 8
+LV: Selecting VF: vscale x 16 With Cost: 0.
+maxbefore: 2
+maxafter: 2
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 768
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 320
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 192
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 160
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 160
+A is scalable.	B is scalable.	
+RTCostA: 96, RTCostB: 128
+LEV: Vectorizing epilogue loop with VF = vscale x 8 at function: main at line: Library.cpp
+LEV: EpilogueVF.Width: vscale x 8
+Executing best plan with VF=vscale x 16, UF=2 at function: main at line: Library.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%conv112>, ir<1>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx113> = getelementptr inbounds ir<%movetimear>, ir<0>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx113>
+    WIDEN store vp<%4>, ir<%conv112>
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end116>, scalar.ph
+
+ir-bb<for.end116>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+Executing best plan with VF=vscale x 8, UF=1 at function: main at line: Library.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vec.epilog.vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv = phi 0, %indvars.iv.next\l" +
+    "  ir<%conv112>, ir<1>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx113> = getelementptr inbounds ir<%movetimear>, ir<0>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx113>
+    WIDEN store vp<%4>, ir<%conv112>
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end116>, scalar.ph
+
+ir-bb<for.end116>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 4 -> VectorType: <2 x i8> -> ttilog -> MemoryOpCost(4)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 2 -> VectorType: <4 x i8> -> ttilog -> MemoryOpCost(2)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <16 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: Invalid -> VectorType: <vscale x 1 x i8> -> ttilog -> 
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 2 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 4 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 8 x i8> -> ttilog -> MemoryOpCost(1)
+@@ Instruction =>  store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 -> Cost: 1 -> VectorType: <vscale x 16 x i8> -> ttilog -> MemoryOpCost(1)
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 1 to 2==========
+VPlan 'Initial VPlan for VF={1},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%3>
+    WIDEN-INDUCTION %indvars.iv397 = phi 0, %indvars.iv.next398, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv397 = phi 0, %indvars.iv.next398\l" +
+    "  ir<%conv172>, ir<1>
+    CLONE ir<%arrayidx174> = getelementptr inbounds ir<%movetimear167>, ir<0>, ir<%indvars.iv397>
+    CLONE store ir<%conv172>, ir<%arrayidx174>
+    CLONE ir<%indvars.iv.next398> = add nuw nsw ir<%indvars.iv397>, ir<1>
+    CLONE ir<%exitcond400.not> = icmp eq ir<%indvars.iv.next398>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%3> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%3>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%5> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%5>
+Successor(s): ir-bb<for.end177>, scalar.ph
+
+ir-bb<for.end177>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 2 to 32==========
+VPlan 'Initial VPlan for VF={2,4,8,16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv397 = phi 0, %indvars.iv.next398, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv397 = phi 0, %indvars.iv.next398\l" +
+    "  ir<%conv172>, ir<1>
+    CLONE ir<%arrayidx174> = getelementptr inbounds ir<%movetimear167>, ir<0>, ir<%indvars.iv397>
+    vp<%3> = vector-pointer ir<%arrayidx174>
+    WIDEN store vp<%3>, ir<%conv172>
+    WIDEN ir<%indvars.iv.next398> = add nuw nsw ir<%indvars.iv397>, ir<1>
+    CLONE ir<%exitcond400.not> = icmp eq ir<%indvars.iv.next398>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.end177>, scalar.ph
+
+ir-bb<for.end177>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+========== Loop: main' from Library.cpp==========
+========== VPlan for Vector Factor Range: 1 to 32==========
+VPlan 'Initial VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%4>
+    WIDEN-INDUCTION %indvars.iv397 = phi 0, %indvars.iv.next398, ir<1>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv397 = phi 0, %indvars.iv.next398\l" +
+    "  ir<%conv172>, ir<1>
+    CLONE ir<%arrayidx174> = getelementptr inbounds ir<%movetimear167>, ir<0>, ir<%indvars.iv397>
+    vp<%3> = vector-pointer ir<%arrayidx174>
+    WIDEN store vp<%3>, ir<%conv172>
+    WIDEN ir<%indvars.iv.next398> = add nuw nsw ir<%indvars.iv397>, ir<1>
+    CLONE ir<%exitcond400.not> = icmp eq ir<%indvars.iv.next398>, ir<256>
+  Successor(s): 
+
+  :
+  Successor(s): vector.latch
+
+  vector.latch:
+    EMIT vp<%4> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%4>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%6> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%6>
+Successor(s): ir-bb<for.end177>, scalar.ph
+
+ir-bb<for.end177>:
+No successors
+
+scalar.ph:
+No successors
+}
+
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 1 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Found an estimated cost of 2 for VF 1 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF 1 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 1 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Scalar loop costs: 4.
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 2 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 4 for VF 2 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF 2 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 2 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width 2 costs: 3
+A is not scalable.	B is not scalable.	
+RTCostA: 768, RTCostB: 1024
+Candidate VF: 2 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 768, RTCostB: 1024
+Update Chosen Factor with Candidate VF: 2 and ChosenFactor VF: 1
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 4 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 2 for VF 4 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 2 for VF 4 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF 4 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 4 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width 4 costs: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 1024
+Candidate VF: 4 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 768
+Update Chosen Factor with Candidate VF: 4 and ChosenFactor VF: 2
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 8 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 8 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 4 for VF 8 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF 8 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 8 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width 8 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 1024
+Candidate VF: 8 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 320
+Update Chosen Factor with Candidate VF: 8 and ChosenFactor VF: 4
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF 16 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF 16 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 8 for VF 16 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF 16 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF 16 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width 16 costs: 0
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 1024
+Candidate VF: 16 is more profitable than ScalarCost VF: 1
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 192
+Update Chosen Factor with Candidate VF: 16 and ChosenFactor VF: 8
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of Invalid for VF vscale x 1 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 1 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 1 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width vscale x 1 costs: Invalid
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 1024
+A is scalable.	B is not scalable.	
+RTCostA: Invalid, RTCostB: 160
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 2 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 2 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width vscale x 2 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 1024
+Candidate VF: vscale x 2 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 160
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 2 for VF vscale x 4 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 4 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 4 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width vscale x 4 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 1024
+Candidate VF: vscale x 4 is more profitable than ScalarCost VF: 1
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 160
+Update Chosen Factor with Candidate VF: vscale x 4 and ChosenFactor VF: 16
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 4 for VF vscale x 8 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 8 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 8 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width vscale x 8 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 96, RTCostB: 1024
+Candidate VF: vscale x 8 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 96, RTCostB: 128
+Update Chosen Factor with Candidate VF: vscale x 8 and ChosenFactor VF: vscale x 4
+
+-----------------Function that is being costed:'main' from Library.cpp-----------------
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %indvars.iv397 = phi i64 [ 0, %for.body159 ], [ %indvars.iv.next398, %for.body171 ] of type:phi
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %conv172 = trunc i64 %indvars.iv397 to i8 of type:trunc
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   %arrayidx174 = getelementptr inbounds [256 x i8], ptr %movetimear167, i64 0, i64 %indvars.iv397 of type:getelementptr
+LV: Decision: Widen
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   store i8 %conv172, ptr %arrayidx174, align 1, !tbaa !41 of type:store
+LV: Found an estimated cost of 8 for VF vscale x 16 For instruction:   %indvars.iv.next398 = add nuw nsw i64 %indvars.iv397, 1 of type:add
+LV: Found an estimated cost of 1 for VF vscale x 16 For instruction:   %exitcond400.not = icmp eq i64 %indvars.iv.next398, 256 of type:icmp
+LV: Found an estimated cost of 0 for VF vscale x 16 For instruction:   br i1 %exitcond400.not, label %for.end177, label %for.body171 of type:br
+LV: Vector loop of width vscale x 16 costs: 0
+A is scalable.	B is not scalable.	
+RTCostA: 80, RTCostB: 1024
+Candidate VF: vscale x 16 is more profitable than ScalarCost VF: 1
+A is scalable.	B is scalable.	
+RTCostA: 80, RTCostB: 96
+Update Chosen Factor with Candidate VF: vscale x 16 and ChosenFactor VF: vscale x 8
+LV: Selecting VF: vscale x 16 With Cost: 0.
+maxbefore: 2
+maxafter: 2
+A is not scalable.	B is not scalable.	
+RTCostA: 320, RTCostB: 768
+A is not scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 320
+A is not scalable.	B is not scalable.	
+RTCostA: 160, RTCostB: 192
+A is scalable.	B is not scalable.	
+RTCostA: 192, RTCostB: 160
+A is scalable.	B is not scalable.	
+RTCostA: 128, RTCostB: 160
+A is scalable.	B is scalable.	
+RTCostA: 96, RTCostB: 128
+LEV: Vectorizing epilogue loop with VF = vscale x 8 at function: main at line: Library.cpp
+LEV: EpilogueVF.Width: vscale x 8
+Executing best plan with VF=vscale x 16, UF=2 at function: main at line: Library.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv397 = phi 0, %indvars.iv.next398\l" +
+    "  ir<%conv172>, ir<1>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx174> = getelementptr inbounds ir<%movetimear167>, ir<0>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx174>
+    WIDEN store vp<%4>, ir<%conv172>
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end177>, scalar.ph
+
+ir-bb<for.end177>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+Executing best plan with VF=vscale x 8, UF=1 at function: main at line: Library.cpp
+================ Final VPlan ================
+VPlan 'Final VPlan for VF={vscale x 1,vscale x 2,vscale x 4,vscale x 8,vscale x 16},UF>=1' {
+Live-in vp<%0> = VF * UF
+Live-in vp<%1> = vector-trip-count
+Live-in ir<256> = original trip-count
+
+vector.ph:
+Successor(s): vector loop
+
+<x1> vector loop: {
+  vec.epilog.vector.body:
+    EMIT vp<%2> = CANONICAL-INDUCTION ir<0>, vp<%5>
+    WIDEN-INDUCTION\l" +
+    "  %indvars.iv397 = phi 0, %indvars.iv.next398\l" +
+    "  ir<%conv172>, ir<1>
+    vp<%3> = SCALAR-STEPS vp<%2>, ir<1>
+    CLONE ir<%arrayidx174> = getelementptr inbounds ir<%movetimear167>, ir<0>, vp<%3>
+    vp<%4> = vector-pointer ir<%arrayidx174>
+    WIDEN store vp<%4>, ir<%conv172>
+    EMIT vp<%5> = add nuw vp<%2>, vp<%0>
+    EMIT branch-on-count vp<%5>, vp<%1>
+  No successors
+}
+Successor(s): middle.block
+
+middle.block:
+  EMIT vp<%7> = icmp eq ir<256>, vp<%1>
+  EMIT branch-on-cond vp<%7>
+Successor(s): ir-bb<for.end177>, scalar.ph
+
+ir-bb<for.end177>:
+No successors
+
+scalar.ph:
+No successors
+}
+================ Final VPlan ================
+
+================================================
+Loops Vectorized: 2
+Loops Analyzed: 7
+Loops Epilogues Vectorized: 2
+================================================
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Random.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Random.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Region_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Region_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o RegWay_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           RegWay_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration   -c -o Way_.o -DSPEC_CPU -DNDEBUG -DSPEC_CPU_LITTLE_ENDIAN   -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           Way_.cpp
+/home/tomlord/workspace/Tom/llvm-project/arm64-debug/bin/clang++ -std=c++98 -static -w -Wno-error=int-conversion -Wno-error=implicit-function-declaration     -march=armv8-a+sve -O3   -fno-slp-vectorize -fno-inline-functions -include cstddef -include cstdlib -include cstring           CreateWay_.o Places_.o RegBounds_.o RegMng_.o Way2_.o WayInit_.o Library.o Random.o Region_.o RegWay_.o Way_.o                     -o astar
