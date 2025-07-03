@@ -1,0 +1,24 @@
+--- Processing Base Directory for Total Costs: origin (../TTI/origin) ---
+
+--- Processing Revised Directory for Total Costs: rev (../TTI/rev) ---
+
+--- Processing Revised Directory for Total Costs: rev-real (../TTI/rev-real) ---
+
+Benchmark Cost Comparison Table:
+-----------------------------------------------------------
+Benchmark                  origin          rev     rev-real
+-----------------------------------------------------------
+400.perlbench              129.00        94.00       101.00
+401.bzip2                   95.00        84.00        84.00
+403.gcc                    453.00       419.00       424.00
+429.mcf                     29.00        29.00        29.00
+445.gobmk                  801.00       801.00       801.00
+450.soplex                 336.00       312.00       314.00
+453.povray                 344.00       318.00       324.00
+456.hmmer                  112.00       110.00       111.00
+458.sjeng                   19.00        19.00        19.00
+464.h264ref               1719.00      1713.00      1713.00
+471.omnetpp                  1.00         1.00         1.00
+473.astar                    1.00         1.00         1.00
+-----------------------------------------------------------
+Total cost comparison plot saved to: MARCtotal_costs_comparison.png

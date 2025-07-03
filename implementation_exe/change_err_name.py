@@ -15,8 +15,8 @@ def change_build_directory_names():
             run_dir = os.path.join(benchmark_path, 'run')
             if os.path.isdir(run_dir):
                 for arch in os.listdir(run_dir):
-                    if arch.startswith('riscv_tom_custom') or arch.startswith('arm_tom_after') or arch.startswith('riscv_tom_after'):
-                    # if arch.startswith('riscv_tom_custom') or arch.startswith('riscv_tom_after'):
+                    # if arch.startswith('riscv_tom_custom') or arch.startswith('arm_tom_after') or arch.startswith('riscv_tom_after'):
+                    if arch.startswith('riscv_tom_custom') :
                         arch_dir = os.path.join(run_dir, arch)
                         if os.path.isdir(arch_dir):
                             # Get make.err
@@ -27,10 +27,12 @@ def change_build_directory_names():
                                 if arch.startswith('riscv_tom_custom') :
                                 # if arch.startswith('riscv_tom_custom') or arch.startswith('riscv_tom_after'):
                                     # new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
-                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/TTI/origin-cost', f"{benchmark}_{arch}_out.log")
-                                    new_name_err = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_IR.ll")
+                                    # new_name_out = os.path.join('/home/tomlord/workspace/Tom/TTI/origin-cost', f"{benchmark}_{arch}_out.log")
+                                    # new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
+                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/TTI/rev', f"{benchmark}_{arch}_out.log")
+                                    # new_name_err = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_IR.ll")
                                 elif arch.startswith('arm_tom_after'):
-                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/TTI/arm', f"{benchmark}_{arch}_out.log")
+                                    new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
                                 else:
                                     new_name_out = os.path.join('/home/tomlord/workspace/Tom/WIDEN_REVERSE', f"{benchmark}_{arch}_out.log")
                                 try:

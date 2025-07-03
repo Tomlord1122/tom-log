@@ -1,0 +1,20 @@
+
+Analyzing comparable load/store costs (from final decisions) for 'origin' and 'arm'...
+
+Benchmark Style Cost Comparison (Aggregated from Common Functions):
+--------------------------------------------------------------------------------------------------------------
+Benchmark                 Style                            origin                arm         Diff        Diff%
+--------------------------------------------------------------------------------------------------------------
+400.perlbench             Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+401.bzip2                 Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+403.gcc                   Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+429.mcf                   Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+445.gobmk                 Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+450.soplex                Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+453.povray                Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+456.hmmer                 Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+458.sjeng                 Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+464.h264ref               Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+471.omnetpp               Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+473.astar                 Comparable_LdSt_Cost               0.00               0.00         0.00        0.00%
+--------------------------------------------------------------------------------------------------------------
