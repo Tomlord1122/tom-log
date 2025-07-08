@@ -4,6 +4,7 @@ import concurrent.futures # 匯入多執行緒相關模組
 import time # 匯入時間模組，可以選擇性地用來計時
 import sys # 匯入 sys 模組，用於結束腳本
 import shutil # 匯入 shutil 模組，用於檔案複製
+import datetime # 匯入日期時間模組，用於時間戳記錄
 
 # --- 設定區 ---
 
@@ -27,53 +28,128 @@ LOG_TARGET_BASE_PATH = "/home/tomlord/workspace/Speckle-2017"
 ORIGIN_LOG_DIR = os.path.join(LOG_TARGET_BASE_PATH, "origin")
 REV_LOG_DIR = os.path.join(LOG_TARGET_BASE_PATH, "rev")
 
+# 執行日誌目錄
+EXECUTION_LOG_DIR = os.path.join(LOG_TARGET_BASE_PATH, "execution_logs")
+
 
 # --- Worker Function ---
 # 這個函式會在獨立的執行緒中執行，負責執行單一個 benchmark 的 run.sh
-def run_single_benchmark(benchmark_dir, bench_num_prefix):
+def run_single_benchmark(benchmark_dir, bench_num_prefix, original_base_dir):
     """
-    執行指定 benchmark 目錄下的 run.sh 腳本。
+    執行指定 benchmark 目錄下的 run.sh 腳本，並記錄完整的執行日誌。
 
     Args:
         benchmark_dir (str): 包含 run.sh 的完整 benchmark 目錄路徑。
         bench_num_prefix (str): 用來識別的 benchmark 編號前綴 (僅用於印出訊息)。
+        original_base_dir (str): 原始基礎目錄路徑，用於分類。
     """
     run_script_path = os.path.join(benchmark_dir, "run.sh")
     # 取得目錄名稱，方便在訊息中顯示
     dir_name = os.path.basename(benchmark_dir)
     base_name = os.path.basename(os.path.dirname(benchmark_dir)) # 取得上一層目錄名 (例如 ref)
+    
+    # 創建執行日誌目錄
+    os.makedirs(EXECUTION_LOG_DIR, exist_ok=True)
+    
+    # 判斷是 debug 還是 custom 版本
+    version_type = "debug" if "riscv_tom_debug" in original_base_dir else "custom"
+    suite_type = "fprate" if "fprate" in original_base_dir else "intrate"
+    
+    # 創建詳細的日誌文件名
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"{dir_name}_{version_type}_{suite_type}_{timestamp}.log"
+    execution_log_path = os.path.join(EXECUTION_LOG_DIR, log_filename)
 
     # 檢查 run.sh 檔案是否存在
     if os.path.isfile(run_script_path):
         # 加上 [Thread] 前綴，方便區分不同執行緒的輸出
-        print(f"  [Thread] 開始執行: {dir_name} (於 {base_name})")
-
-        # 執行 run.sh
+        print(f"  [Thread] 開始執行: {dir_name} (於 {base_name}) [{version_type}]")
+        
+        # 創建完整的執行日誌文件
         try:
-            start_time = time.time() # 記錄開始時間
-            # 執行 run.sh，增加 timeout 避免卡住 (例如 300 秒 = 5 分鐘)
-            result = subprocess.run(
-                ['bash', 'run.sh'],
-                cwd=benchmark_dir,      # 在 benchmark 目錄下執行
-                check=True,             # 如果 run.sh 報錯，則拋出例外
-                capture_output=True,    # 捕捉標準輸出和標準錯誤
-                text=True,              # 讓輸出是文字格式
-            )
-            end_time = time.time()   # 記錄結束時間
-            duration = end_time - start_time # 計算執行時間
-            # 執行成功
-            print(f"    [Thread] ✅ 執行成功: {dir_name} (於 {base_name}) (耗時: {duration:.2f} 秒)")
+            with open(execution_log_path, 'w', encoding='utf-8') as log_file:
+                # 寫入日誌標頭
+                log_file.write(f"=== Benchmark 執行日誌 ===\n")
+                log_file.write(f"Benchmark: {dir_name}\n")
+                log_file.write(f"版本類型: {version_type}\n")
+                log_file.write(f"測試套件: {suite_type}\n")
+                log_file.write(f"基礎目錄: {original_base_dir}\n")
+                log_file.write(f"執行目錄: {benchmark_dir}\n")
+                log_file.write(f"開始時間: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                log_file.write(f"{'='*50}\n\n")
+                
+                # 執行 run.sh
+                try:
+                    start_time = time.time() # 記錄開始時間
+                    log_file.write(f"執行命令: bash run.sh\n")
+                    log_file.write(f"工作目錄: {benchmark_dir}\n\n")
+                    
+                    # 執行 run.sh，捕捉所有輸出
+                    result = subprocess.run(
+                        ['bash', 'run.sh'],
+                        cwd=benchmark_dir,      # 在 benchmark 目錄下執行
+                        capture_output=True,    # 捕捉標準輸出和標準錯誤
+                        text=True,              # 讓輸出是文字格式
+                    )
+                    
+                    end_time = time.time()   # 記錄結束時間
+                    duration = end_time - start_time # 計算執行時間
+                    
+                    # 記錄執行結果
+                    log_file.write(f"執行時間: {duration:.2f} 秒\n")
+                    log_file.write(f"返回代碼: {result.returncode}\n")
+                    log_file.write(f"結束時間: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                    
+                    # 記錄標準輸出
+                    if result.stdout:
+                        log_file.write("=== 標準輸出 ===\n")
+                        log_file.write(result.stdout)
+                        log_file.write("\n")
+                    
+                    # 記錄標準錯誤
+                    if result.stderr:
+                        log_file.write("=== 標準錯誤 ===\n")
+                        log_file.write(result.stderr)
+                        log_file.write("\n")
+                    
+                    # 檢查執行是否成功
+                    if result.returncode == 0:
+                        log_file.write("=== 執行狀態: 成功 ===\n")
+                        print(f"    [Thread] ✅ 執行成功: {dir_name} (於 {base_name}) [{version_type}] (耗時: {duration:.2f} 秒)")
+                    else:
+                        log_file.write("=== 執行狀態: 失敗 ===\n")
+                        print(f"    [Thread] ❌ 執行失敗: {dir_name} (於 {base_name}) [{version_type}] (返回代碼: {result.returncode})")
 
-        except FileNotFoundError:
-            print(f"    [Thread] ❌ 錯誤：在 {dir_name} 找不到 bash 命令或 run.sh 腳本。")
-        except subprocess.CalledProcessError as e:
-            print(f"    [Thread] ❌ 執行失敗: {dir_name} (於 {base_name})")
-            print(f"      錯誤訊息:\n{e.stderr.strip()}")
-        except Exception as e:
-            print(f"    [Thread] ❌ 發生預期外的錯誤於 {dir_name} (於 {base_name}): {e}")
+                except FileNotFoundError:
+                    error_msg = f"錯誤：在 {dir_name} 找不到 bash 命令或 run.sh 腳本。"
+                    log_file.write(f"=== 錯誤 ===\n{error_msg}\n")
+                    print(f"    [Thread] ❌ {error_msg}")
+                except Exception as e:
+                    error_msg = f"發生預期外的錯誤於 {dir_name} (於 {base_name}): {e}"
+                    log_file.write(f"=== 預期外錯誤 ===\n{error_msg}\n")
+                    print(f"    [Thread] ❌ {error_msg}")
+                
+                # 寫入日誌結尾
+                log_file.write(f"\n{'='*50}\n")
+                log_file.write(f"日誌結束時間: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                
+        except IOError as e:
+            print(f"    [Thread] ❌ 無法創建執行日誌文件 {execution_log_path}: {e}")
 
     else:
         print(f"  [Thread] 在 benchmark 目錄 {dir_name} (前綴 {bench_num_prefix}) 中找不到 run.sh，跳過。")
+        
+        # 為缺少 run.sh 的情況也創建日誌
+        try:
+            with open(execution_log_path, 'w', encoding='utf-8') as log_file:
+                log_file.write(f"=== Benchmark 執行日誌 ===\n")
+                log_file.write(f"Benchmark: {dir_name}\n")
+                log_file.write(f"版本類型: {version_type}\n")
+                log_file.write(f"測試套件: {suite_type}\n")
+                log_file.write(f"狀態: 跳過 (找不到 run.sh)\n")
+                log_file.write(f"時間: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        except IOError:
+            pass  # 如果無法寫入日誌，就靜默忽略
 
 # --- Log Collection Function ---
 def collect_and_classify_logs(tasks_completed):
@@ -138,17 +214,16 @@ def collect_and_classify_logs(tasks_completed):
             else:
                 # 如果根據原始路徑無法判斷是 debug 還是 custom
                  print(f"  警告: 無法根據原始基礎目錄決定 {os.path.basename(benchmark_dir)} 的目標分類目錄: {original_base_dir}")
-        # else:
-            # 如果不需要顯示找不到 logs 目錄的訊息，可以註解掉下面這行
-            # print(f"  在 {os.path.basename(benchmark_dir)} 中找不到 'logs' 目錄。")
 
     print("\nLog 檔案收集與分類完成。")
+    print(f"執行日誌已保存至: {EXECUTION_LOG_DIR}")
     print("---")
 
 
 # --- 主要執行邏輯 ---
 
 print("開始執行 Benchmark 腳本...")
+print(f"執行日誌將保存至: {EXECUTION_LOG_DIR}")
 
 # tasks_to_run 現在會儲存 (benchmark_dir, prefix, original_base_dir)
 tasks_to_run = []
@@ -156,8 +231,6 @@ tasks_to_run = []
 print("正在收集需要執行的 Benchmark 任務...")
 # 收集任務
 for base_dir in base_dirs:
-    # print(f"\n正在檢查基礎目錄: {base_dir}") # 減少輸出
-
     if not os.path.isdir(base_dir):
         print(f"警告：基礎目錄不存在，跳過: {base_dir}")
         continue
@@ -186,7 +259,8 @@ completed_normally = False # 標記是否正常完成
 try:
     if tasks_to_run:
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-            future_to_task = {executor.submit(run_single_benchmark, task[0], task[1]): task for task in tasks_to_run}
+            # 修改這裡，傳遞 original_base_dir 參數
+            future_to_task = {executor.submit(run_single_benchmark, task[0], task[1], task[2]): task for task in tasks_to_run}
 
             print("\n開始執行 Benchmark...")
             # 使用 as_completed 來等待任務完成
